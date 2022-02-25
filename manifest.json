@@ -8,12 +8,5 @@
       "matches": ["http://www.youtube.com/*","https://www.youtube.com/*"],
       "js": ["myscript.js"]
     }
-  ],
-   "background": {
-        "service_worker": "background.js"
-  },
-  "action": {},
-   "permissions": [
-    "webNavigation"
   ]
 }
