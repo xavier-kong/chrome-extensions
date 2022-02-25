@@ -1,0 +1,19 @@
+{
+  "name": "Hide YouTube Search Bar",
+  "description": "Hide the youtube search bar!",
+  "version": "1.0",
+  "manifest_version": 3,
+  "content_scripts": [
+    {
+      "matches": ["http://www.youtube.com/*","https://www.youtube.com/*"],
+      "js": ["myscript.js"]
+    }
+  ],
+   "background": {
+        "service_worker": "background.js"
+  },
+  "action": {},
+   "permissions": [
+    "webNavigation"
+  ]
+}
