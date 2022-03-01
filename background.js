@@ -1,25 +1,19 @@
-chrome.webNavigation.onHistoryStateUpdated.addListener(async (details) => {
-    const { id, url } = await getCurrentTab();
-    if (url.includes('youtube.com')) {
-        chrome.tabs.sendMessage(id, {command: 'hide-search'})
-    }
-})
+const eventList = ['onHistoryStateUpdated', 'onCompleted'];
 
-chrome.webNavigation.onCompleted.addListener(async (details) => {
-    const { tabId, url } = details;
-    if (url.includes('youtube.com')) {
-        chrome.tabs.sendMessage(tabId, {command: 'hide-search'})
-    }
-})
-
-const eventList = ['onHistoryStateUpdated', ]
+for (const event of eventList) {
+    chrome.webNavigation[event].addListener(async (details) => {
+        const { tabId, url } = details;
+        if (url.includes('youtube.com')) {
+            chrome.tabs.sendMessage(tabId, {command: 'hide-search'})
+        }
+    })
+}
 
 async function getCurrentTab() {
   let queryOptions = { active: true, currentWindow: true };
   let [tab] = await chrome.tabs.query(queryOptions);
   return tab;
 }
-
 
 /*
 on new url:

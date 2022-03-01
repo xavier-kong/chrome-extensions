@@ -2,7 +2,6 @@ const hideSearch = () => {
     let found = false;
 
     while (!found) {
-        console.log('running');
         try {
             document.getElementById('center').style.display = 'none';
             if (document.getElementById('center').style.display === 'none') {
@@ -16,8 +15,8 @@ const hideSearch = () => {
 }
 
 chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
-        console.log('im here!');
         if (message.command === 'hide-search') {
+            console.log('serach party');
             hideSearch();
         }
     }
