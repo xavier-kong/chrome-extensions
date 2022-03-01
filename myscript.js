@@ -15,9 +15,7 @@ const hideSearch = () => {
 }
 
 chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
-        if (message.command === 'hide-search') {
-            console.log('serach party');
-            hideSearch();
-        }
+    if (message.command === 'hide-search') {
+        hideSearch();
     }
-)
+})

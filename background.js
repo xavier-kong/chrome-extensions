@@ -16,15 +16,31 @@ async function getCurrentTab() {
 }
 
 /*
-on new url:
-    if url includes youtube:
-        wait for DOM to load
-        send message to tab to initiate hide search bar
-
-
 ideas:
 when youtube is fullscreen
 set other window to dark to prevent distraction
+
+on new tab created:
+    if includes watch and no playlist:
+        if referrer is not youtube playlist/subs/google sheets or if referrer is none
+            redirect
+
+key events:
+on new tab opened created
+tab history updated (url change)
+onCompleted
+
+methods to watch a vid:
+open a vid on playlist (allowed) 
+open from subscription (not allowed)
+open from channel (not allowed)
+open from google search (not allowed)
+open from external website (not allowed)
+open from direct link entry (not allowed)
+open from bookmark (not allowed)
+
+so actually only have to: if link includes watch but no list then redirect lol
+
 
 and
 
