@@ -1,24 +1,30 @@
 const eventList = ['onHistoryStateUpdated', 'onCompleted'];
 
 const filter = {
-  url: [
-    {
-      urlContains: 'youtube',
-    },
-  ],
+    url: [
+        {
+            urlContains: 'youtube',
+        },
+    ],
 };
 
 for (const event of eventList) {
     chrome.webNavigation[event].addListener(async (details) => {
         const { tabId, url } = details;
         if (url.includes('youtube.com')) {
-            if (url.includes('watch?v') && !(url.includes('list='))) {
-                chrome.tabs.update(tabId, { url: 'ali.jpg' })
+            if (url.includes('watch?v') && !url.includes('list=')) {
+                chrome.tabs.update(tabId, { url: 'ali.jpg' });
             }
-            chrome.tabs.sendMessage(tabId, {command: 'hide-search'})
+            chrome.tabs.sendMessage(tabId, { command: 'hide-search' });
         }
-    }, filter)
+    }, filter);
 }
+
+chrome.windows.onCreated.addListener((window) => {
+    chrome.storage.sync.get(['key'], function (result) {
+        console.log('Value currently is ' + result.key);
+    });
+});
 
 /*
 ideas:
@@ -27,6 +33,18 @@ set other window to dark to prevent distraction
 
 
 chrome extension to only allow certain number of visits to a site each day aka only 5 vists to youtube subcriptions per day etc/ twitter
+
+on open of chrome:
+    check if last date is today
+    refresh counts if needed
+
+    chrome.runtime.onStartup.addListener(
+  callback: function,
+)
+
+https://developer.chrome.com/docs/extensions/reference/storage/#usage
+
+
 before navigation:
     prompt user with amount of visits remaining
     and if they would like to continue

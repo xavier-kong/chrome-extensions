@@ -11,7 +11,8 @@
   ],
   "permissions": [
     "tabs",
-    "webNavigation"
+    "webNavigation",
+    "storage"
   ],
   "background": {
     "service_worker": "background.js"
