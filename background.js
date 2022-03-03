@@ -20,9 +20,46 @@ for (const event of eventList) {
     }, filter);
 }
 
+const createDate = (date = new Date()) => {
+    return {
+        day: date.getDate(),
+        month: date.getMonth(),
+        year: date.getFullYear(),
+    };
+};
+
+const setData = async () => {
+    const { day, month, year } = createDate();
+    const data = {
+        'hide-yt-search': {
+            date: `${year}-${month}-${day}`,
+            sites: {
+                'youtube.com': 10,
+                'twitter.com': 10,
+                'discord.com': 10,
+            },
+        },
+    };
+    await chrome.storage.sync.set({ 'hide-yt-search': data['hide-yt-search'] });
+};
+
+const checkDate = (date) => {
+    const { day, month, year } = createDate();
+    const { day: testDay, month: testMonth, year: testYear } = createDate(date);
+
+    return day === testDay && month === testMonth && year === testYear;
+};
+
 chrome.windows.onCreated.addListener((window) => {
-    chrome.storage.sync.get(['key'], function (result) {
-        console.log('Value currently is ' + result.key);
+    chrome.storage.sync.get(['hide-yt-search'], (result) => {
+        if (result) {
+            const { date, sites } = result['hide-yt-search'];
+            if (!checkDate(date)) {
+                setData();
+            }
+        } else {
+            setData();
+        }
     });
 });
 
