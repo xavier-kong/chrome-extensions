@@ -34,13 +34,15 @@ const setData = async () => {
         'hide-yt-search': {
             date: `${year}-${month}-${day}`,
             sites: {
-                'youtube.com': 10,
+                'https://www.youtube.com/feed/subscriptions': 10,
                 'twitter.com': 10,
                 'discord.com': 10,
             },
         },
     };
-    await chrome.storage.sync.set({ 'hide-yt-search': data['hide-yt-search'] });
+    await chrome.storage.local.set({
+        'hide-yt-search': data['hide-yt-search'],
+    });
 };
 
 const checkDate = (date) => {
@@ -51,7 +53,7 @@ const checkDate = (date) => {
 };
 
 chrome.windows.onCreated.addListener((window) => {
-    chrome.storage.sync.get(['hide-yt-search'], (result) => {
+    chrome.storage.local.get(['hide-yt-search'], (result) => {
         if (result) {
             const { date, sites } = result['hide-yt-search'];
             if (!checkDate(date)) {
@@ -70,16 +72,6 @@ set other window to dark to prevent distraction
 
 
 chrome extension to only allow certain number of visits to a site each day aka only 5 vists to youtube subcriptions per day etc/ twitter
-
-on open of chrome:
-    check if last date is today
-    refresh counts if needed
-
-    chrome.runtime.onStartup.addListener(
-  callback: function,
-)
-
-https://developer.chrome.com/docs/extensions/reference/storage/#usage
 
 
 before navigation:
