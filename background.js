@@ -54,6 +54,7 @@ const checkDate = (date) => {
 
 chrome.windows.onCreated.addListener((window) => {
     chrome.storage.local.get(['hide-yt-search'], (result) => {
+        setData();
         if (result) {
             const { date, sites } = result['hide-yt-search'];
             if (!checkDate(date)) {
@@ -64,6 +65,22 @@ chrome.windows.onCreated.addListener((window) => {
         }
     });
 });
+
+// chrome.webRequest.onBeforeRedirect.addListener(
+//     (details) => {
+//         console.log('obr', details);
+//     },
+//     { urls: ['<all_urls>'] }
+// );
+
+/*
+    the current issue:
+        if method is post and url constains "https://www.youtube.com/youtubei/v1/browse?key=AIzaSyAO_FJ2SlqU8Q4STEHLGCilw_Y9_11qcW8"
+
+
+    could do on tab update then redirect (easier to obtain url)
+    only decrement count when user selects continue 
+    */
 
 /*
 ideas:

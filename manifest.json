@@ -9,7 +9,8 @@
             "js": ["myscript.js"]
         }
     ],
-    "permissions": ["tabs", "webNavigation", "storage"],
+    "permissions": ["tabs", "webNavigation", "storage", "webRequest"],
+    "host_permissions": ["*://www.youtube.com/*"],
     "background": {
         "service_worker": "background.js"
     }
