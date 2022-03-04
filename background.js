@@ -35,9 +35,18 @@ const setData = async () => {
         'hide-yt-search': {
             date: `${year}-${month}-${day}`,
             sites: {
-                'https://www.youtube.com/feed/subscriptions': 10,
-                'twitter.com': 10,
-                'discord.com': 10,
+                'https://www.youtube.com/feed/subscriptions': {
+                    count: 10,
+                    forgive: false,
+                },
+                'twitter.com': {
+                    count: 10,
+                    forgive: false,
+                },
+                'discord.com': {
+                    count: 10,
+                    forgive: false,
+                },
             },
         },
     };
@@ -66,13 +75,48 @@ chrome.windows.onCreated.addListener((window) => {
     });
 });
 
+const getBadSite = (sites, url) => {
+    
+}
+
 chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
     chrome.storage.local.get(['hide-yt-search'], (result) => {
         const { date, sites } = result['hide-yt-search'];
         const badSites = Object.keys(sites);
 
         if (badSites.some((site) => changeInfo.url.includes(site))) {
-            chrome.tabs.update(tabId, { url: './redirect/redirect.html' });
+            // need to get site url
+            if (sites[changeInfo.url].forgive) {
+                /*
+                dont need to redirect
+                set forgive to false
+                */
+                const data = {
+                    'hide-yt-search': {
+                        date: date,
+                        sites: {
+                            ...result['hide-yt-search'].sites,
+                        },
+                    },
+                };
+            } else {
+            }
+            // chrome.tabs.update(tabId, { url: './redirect/redirect.html' });
+            /*
+            to do:
+            1. figure out how to pass target url to page
+            2. change page dynamically on click
+                1. if remaining visits is 0 prevent user from accessing
+            3. the test thingy
+            4. decrement count
+            5. figure out how to prevent loop
+                if allow redirect
+                    set site.forgive = true
+                    then when page renders
+
+
+            https://developer.chrome.com/docs/extensions/reference/history/#event-onVisited
+            */
         }
     });
 });
