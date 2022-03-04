@@ -72,7 +72,7 @@ chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
         const badSites = Object.keys(sites);
 
         if (badSites.some((site) => changeInfo.url.includes(site))) {
-            console.log('hello', changeInfo.url);
+            chrome.tabs.update(tabId, { url: './redirect/redirect.html' });
         }
     });
 });
