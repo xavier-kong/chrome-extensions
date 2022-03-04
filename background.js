@@ -20,7 +20,8 @@ for (const event of eventList) {
     }, filter);
 }
 
-const createDate = (date = new Date()) => {
+const createDate = (dateString = new Date()) => {
+    const date = new Date(dateString);
     return {
         day: date.getDate(),
         month: date.getMonth(),
@@ -54,7 +55,6 @@ const checkDate = (date) => {
 
 chrome.windows.onCreated.addListener((window) => {
     chrome.storage.local.get(['hide-yt-search'], (result) => {
-        setData();
         if (result) {
             const { date, sites } = result['hide-yt-search'];
             if (!checkDate(date)) {
@@ -66,30 +66,25 @@ chrome.windows.onCreated.addListener((window) => {
     });
 });
 
-// chrome.webRequest.onBeforeRedirect.addListener(
-//     (details) => {
-//         console.log('obr', details);
-//     },
-//     { urls: ['<all_urls>'] }
-// );
+chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
+    chrome.storage.local.get(['hide-yt-search'], (result) => {
+        const { date, sites } = result['hide-yt-search'];
+        const badSites = Object.keys(sites);
+
+        if (badSites.some((site) => changeInfo.url.includes(site))) {
+            console.log('hello', changeInfo.url);
+        }
+    });
+});
 
 /*
-    the current issue:
-        if method is post and url constains "https://www.youtube.com/youtubei/v1/browse?key=AIzaSyAO_FJ2SlqU8Q4STEHLGCilw_Y9_11qcW8"
-
 
     could do on tab update then redirect (easier to obtain url)
     only decrement count when user selects continue 
     */
 
 /*
-ideas:
-when youtube is fullscreen
-set other window to dark to prevent distraction
-
-
 chrome extension to only allow certain number of visits to a site each day aka only 5 vists to youtube subcriptions per day etc/ twitter
-
 
 before navigation:
     prompt user with amount of visits remaining
