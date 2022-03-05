@@ -76,33 +76,46 @@ chrome.windows.onCreated.addListener((window) => {
 });
 
 const getBadSite = (sites, url) => {
-    
-}
+    for (const site of sites) {
+        if (url.includes(site)) {
+            return site;
+        }
+    }
+    return false;
+};
 
 chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
-    chrome.storage.local.get(['hide-yt-search'], (result) => {
+    chrome.storage.local.get(['hide-yt-search'], async (result) => {
         const { date, sites } = result['hide-yt-search'];
         const badSites = Object.keys(sites);
+        const site = getBadSite(badSites, changeInfo.url);
 
-        if (badSites.some((site) => changeInfo.url.includes(site))) {
-            // need to get site url
+        if (site) {
             if (sites[changeInfo.url].forgive) {
-                /*
-                dont need to redirect
-                set forgive to false
-                */
+                // redirect and set data with new forgive
                 const data = {
                     'hide-yt-search': {
                         date: date,
                         sites: {
                             ...result['hide-yt-search'].sites,
+                            [site]: {
+                                ...result['hide-yt-search'].sites[site],
+                                forgive: false,
+                            },
                         },
                     },
                 };
+
+                await chrome.storage.local.set({
+                    'hide-yt-search': data['hide-yt-search'],
+                });
             } else {
+                // redirect page
             }
-            // chrome.tabs.update(tabId, { url: './redirect/redirect.html' });
-            /*
+        }
+
+        // chrome.tabs.update(tabId, { url: './redirect/redirect.html' });
+        /*
             to do:
             1. figure out how to pass target url to page
             2. change page dynamically on click
@@ -117,7 +130,6 @@ chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
 
             https://developer.chrome.com/docs/extensions/reference/history/#event-onVisited
             */
-        }
     });
 });
 
