@@ -1,7 +1,6 @@
-const div = document.getElementById("div");
-    
-const paragraph = document.createElement("p");
+const url = window.location.href;
 
-paragraph.textContent = 'Hello. I was created dynamically';
+const regexUrl = /\S+url=(?<redirectUrl>\S+)/;
+const match = regexUrl.exec(url);
 
-div.appendChild(paragraph);
+const redirectUrl = match.groups.redirectUrl;

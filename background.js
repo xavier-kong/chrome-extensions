@@ -110,11 +110,13 @@ chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
                     'hide-yt-search': data['hide-yt-search'],
                 });
             } else {
+                chrome.tabs.update(tabId, {
+                    url: `./redirect/redirect.html?url=${changeInfo.url}`,
+                });
                 // redirect page
             }
         }
 
-        // chrome.tabs.update(tabId, { url: './redirect/redirect.html' });
         /*
             to do:
             1. figure out how to pass target url to page
