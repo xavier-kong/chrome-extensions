@@ -143,52 +143,6 @@ chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
                     redirectToPrompt(sites, site, changeInfo.url, tabId);
                 }
             }
-
-            /*
-            to do:
-            1. figure out how to pass target url to page
-            2. change page dynamically on click
-            1. if remaining visits is 0 prevent user from accessing
-            3. the test thingy
-            4. decrement count
-            5. figure out how to prevent loop
-            if allow redirect
-            set site.forgive = true
-            then when page renders
-            
-            
-            https://developer.chrome.com/docs/extensions/reference/history/#event-onVisited
-            */
         });
     }
 });
-
-/*
-
-    could do on tab update then redirect (easier to obtain url)
-    only decrement count when user selects continue 
-    */
-
-/*
-chrome extension to only allow certain number of visits to a site each day aka only 5 vists to youtube subcriptions per day etc/ twitter
-
-before navigation:
-    prompt user with amount of visits remaining
-    and if they would like to continue
-
-For tracking counts:
-    use local storage
-    if date in storage != today's date then update counts and stuff
-    upon visit of sites => decrement count
-
-Upon visitng sites:
-    if site in list:
-        redirect to temp site
-        basic html site
-        text with redirect button to orignal url (need find way to create html with redirect link)
-        if select redirect
-            prompt user to enter random gen string (disable copy paste)
-            redirect
-        if select not to redirect
-            um..... will have to see what happens
-*/

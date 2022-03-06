@@ -31,3 +31,11 @@ const redirectToUrl = () => {
 };
 
 redirectButton.addEventListener('click', redirectToUrl);
+
+/*
+        if select redirect
+            prompt user to enter random gen string (disable copy paste)
+            redirect
+        if select not to redirect
+            um..... will have to see what happens
+*/
