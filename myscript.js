@@ -1,10 +1,10 @@
-const hideSearch = () => {
+const hideSearch = (id) => {
     let found = false;
 
     while (!found) {
         try {
-            document.getElementById('center').style.display = 'none';
-            if (document.getElementById('center').style.display === 'none') {
+            document.getElementById(id).style.display = 'none';
+            if (document.getElementById(id).style.display === 'none') {
                 found = true;
                 break;
             }
@@ -12,10 +12,11 @@ const hideSearch = () => {
             console.log(error);
         }
     }
-}
+};
 
 chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
     if (message.command === 'hide-search') {
-        hideSearch();
+        hideSearch('center');
+        hideSearch('logo');
     }
-})
+});
