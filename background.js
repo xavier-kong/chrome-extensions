@@ -77,7 +77,6 @@ chrome.windows.onCreated.addListener((window) => {
 
 const getBadSite = (sites, url) => {
     for (const site of sites) {
-        console.log(site);
         if (url.includes(site)) {
             return site;
         }
@@ -85,58 +84,83 @@ const getBadSite = (sites, url) => {
     return false;
 };
 
-chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
-    chrome.storage.local.get(['hide-yt-search'], async (result) => {
-        const { date, sites } = result['hide-yt-search'];
-        const badSites = Object.keys(sites);
-        const site = getBadSite(badSites, changeInfo.url);
+const redirectToPrompt = (sites, site, redirectUrl, tabId) => {
+    let url;
+    if (sites[site].count > 0) {
+        url = `./redirect/redirect.html?url=${redirectUrl}&site=${site}`;
+    } else {
+        // redirect to site saying no more counts
+        url = `./redirect/redirect.html?url=${redirectUrl}&site=${site}`;
+    }
+    chrome.tabs.update(tabId, {
+        url: url,
+    });
+};
 
-        if (site) {
-            if (sites[site].forgive) {
-                // redirect and set data with new forgive
-                const data = {
-                    'hide-yt-search': {
-                        date: date,
-                        sites: {
-                            ...result['hide-yt-search'].sites,
-                            [site]: {
-                                count: (result['hide-yt-search'].sites[
-                                    site
-                                ].count -= 1),
-                                forgive: false,
+chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
+    if (!changeInfo.url.includes('chrome-extension://')) {
+        chrome.storage.local.get(['hide-yt-search'], async (result) => {
+            const { date, sites } = result['hide-yt-search'];
+            const badSites = Object.keys(sites);
+            const site = getBadSite(badSites, changeInfo.url);
+
+            if (site) {
+                if (sites[site].forgive) {
+                    // redirect and set data with new forgive
+                    const data = {
+                        'hide-yt-search': {
+                            date: date,
+                            sites: {
+                                ...result['hide-yt-search'].sites,
+                                [site]: {
+                                    count: (result['hide-yt-search'].sites[
+                                        site
+                                    ].count -= 1),
+                                    forgive: false,
+                                },
                             },
                         },
-                    },
-                };
+                    };
 
-                await chrome.storage.local.set({
-                    'hide-yt-search': data['hide-yt-search'],
-                });
-            } else {
-                // only redirect if have remaining
-                chrome.tabs.update(tabId, {
-                    url: `./redirect/redirect.html?url=${changeInfo.url}&site=${site}`,
-                });
-                // redirect page
+                    await chrome.storage.local.set({
+                        'hide-yt-search': data['hide-yt-search'],
+                    });
+
+                    chrome.webNavigation.onCommitted.addListener(
+                        (details) => {
+                            if (details.transitionType === 'reload') {
+                                redirectToPrompt(
+                                    sites,
+                                    site,
+                                    details.url,
+                                    tabId
+                                );
+                            }
+                        },
+                        { url: [{ urlContains: `${changeInfo.url}` }] }
+                    );
+                } else {
+                    redirectToPrompt(sites, site, changeInfo.url, tabId);
+                }
             }
-        }
 
-        /*
+            /*
             to do:
             1. figure out how to pass target url to page
             2. change page dynamically on click
-                1. if remaining visits is 0 prevent user from accessing
+            1. if remaining visits is 0 prevent user from accessing
             3. the test thingy
             4. decrement count
             5. figure out how to prevent loop
-                if allow redirect
-                    set site.forgive = true
-                    then when page renders
-
-
+            if allow redirect
+            set site.forgive = true
+            then when page renders
+            
+            
             https://developer.chrome.com/docs/extensions/reference/history/#event-onVisited
             */
-    });
+        });
+    }
 });
 
 /*
