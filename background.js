@@ -77,6 +77,7 @@ chrome.windows.onCreated.addListener((window) => {
 
 const getBadSite = (sites, url) => {
     for (const site of sites) {
+        console.log(site);
         if (url.includes(site)) {
             return site;
         }
@@ -91,7 +92,7 @@ chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
         const site = getBadSite(badSites, changeInfo.url);
 
         if (site) {
-            if (sites[changeInfo.url].forgive) {
+            if (sites[site].forgive) {
                 // redirect and set data with new forgive
                 const data = {
                     'hide-yt-search': {
@@ -99,7 +100,9 @@ chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
                         sites: {
                             ...result['hide-yt-search'].sites,
                             [site]: {
-                                ...result['hide-yt-search'].sites[site],
+                                count: (result['hide-yt-search'].sites[
+                                    site
+                                ].count -= 1),
                                 forgive: false,
                             },
                         },
@@ -110,8 +113,9 @@ chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
                     'hide-yt-search': data['hide-yt-search'],
                 });
             } else {
+                // only redirect if have remaining
                 chrome.tabs.update(tabId, {
-                    url: `./redirect/redirect.html?url=${changeInfo.url}`,
+                    url: `./redirect/redirect.html?url=${changeInfo.url}&site=${site}`,
                 });
                 // redirect page
             }
