@@ -1,4 +1,4 @@
-const hideSearch = (id) => {
+const hideElementById = (id) => {
     let found = false;
 
     while (!found) {
@@ -16,8 +16,8 @@ const hideSearch = (id) => {
 
 chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
     if (message.command === 'hide-search') {
-        hideSearch('center');
-        hideSearch('logo');
-        hideSearch('logo-icon');
+        hideElementById('center');
+        hideElementById('logo');
+        hideElementById('logo-icon');
     }
 });
