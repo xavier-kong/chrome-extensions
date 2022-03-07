@@ -18,5 +18,6 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
     if (message.command === 'hide-search') {
         hideSearch('center');
         hideSearch('logo');
+        hideSearch('logo-icon');
     }
 });
