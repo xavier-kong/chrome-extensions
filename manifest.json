@@ -6,7 +6,8 @@
     "content_scripts": [
         {
             "matches": ["*://www.youtube.com/*"],
-            "js": ["myscript.js"]
+            "js": ["myscript.js"],
+            "css": ["inject.css"]
         }
     ],
     "permissions": ["tabs", "webNavigation", "storage", "webRequest"],
