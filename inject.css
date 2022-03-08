@@ -4,3 +4,7 @@ img.yt-img-shadow,
 #metadata-line.ytd-grid-video-renderer span.ytd-grid-video-renderer {
     display: none !important;
 }
+
+ytd-thumbnail.ytd-grid-video-renderer {
+    height: 35px !important;
+}
