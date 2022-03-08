@@ -1,5 +1,6 @@
 #mouseover-overlay,
 #hover-overlays,
-img.yt-img-shadow {
+img.yt-img-shadow,
+#metadata-line.ytd-grid-video-renderer span.ytd-grid-video-renderer {
     display: none !important;
 }
