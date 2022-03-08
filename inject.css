@@ -1,6 +1,9 @@
 #mouseover-overlay,
 img.yt-img-shadow,
 #footer,
+#center,
+#logo,
+#logo-icon,
 #metadata-line.ytd-grid-video-renderer span.ytd-grid-video-renderer {
     display: none !important;
 }
