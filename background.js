@@ -39,14 +39,14 @@ const setData = async () => {
                     count: 10,
                     forgive: false,
                 },
-                'twitter.com': {
-                    count: 10,
-                    forgive: false,
-                },
-                'discord.com': {
-                    count: 10,
-                    forgive: false,
-                },
+                // 'twitter.com': {
+                //     count: 10,
+                //     forgive: false,
+                // },
+                // 'discord.com': {
+                //     count: 10,
+                //     forgive: false,
+                // },
             },
         },
     };
@@ -126,6 +126,8 @@ chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
                         'hide-yt-search': data['hide-yt-search'],
                     });
 
+                    // only set on exit
+
                     chrome.webNavigation.onCommitted.addListener(
                         (details) => {
                             if (details.transitionType === 'reload') {
@@ -137,7 +139,7 @@ chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
                                 );
                             }
                         },
-                        { url: [{ urlContains: `${changeInfo.url}` }] }
+                        { url: [{ urlContains: 'youtube.com' }] }
                     );
                 } else {
                     redirectToPrompt(sites, site, changeInfo.url, tabId);
@@ -146,3 +148,11 @@ chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
         });
     }
 });
+
+// chrome.tabs.onRemoved.addListener(function (tabid, removed) {
+//     console.log('tab closed');
+// });
+
+// chrome.windows.onRemoved.addListener(function (windowid) {
+//     console.log('window closed');
+// });
