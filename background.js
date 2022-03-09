@@ -39,14 +39,6 @@ const setData = async () => {
                     count: 10,
                     forgive: false,
                 },
-                // 'twitter.com': {
-                //     count: 10,
-                //     forgive: false,
-                // },
-                // 'discord.com': {
-                //     count: 10,
-                //     forgive: false,
-                // },
             },
         },
     };
@@ -148,11 +140,3 @@ chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
         });
     }
 });
-
-// chrome.tabs.onRemoved.addListener(function (tabid, removed) {
-//     console.log('tab closed');
-// });
-
-// chrome.windows.onRemoved.addListener(function (windowid) {
-//     console.log('window closed');
-// });
