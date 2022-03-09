@@ -1,6 +1,6 @@
 {
-    "name": "Hide YouTube Search Bar",
-    "description": "Hide the youtube search bar!",
+    "name": "Make YouTube Better",
+    "description": "making YouTube better than the original product!",
     "version": "1.0",
     "manifest_version": 3,
     "content_scripts": [
