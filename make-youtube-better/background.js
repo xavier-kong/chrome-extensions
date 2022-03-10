@@ -63,13 +63,13 @@ chrome.windows.onCreated.addListener((window) => {
     });
 });
 
-const redirectToPrompt = (sites, site, redirectUrl, tabId) => {
+const redirectToPrompt = (count, redirectUrl, tabId) => {
     let url;
-    if (sites[site].count > 0) {
-        url = `./redirect/redirect.html?url=${redirectUrl}&site=${site}`;
+    if (count > 0) {
+        url = `./redirect/redirect.html?url=${redirectUrl}`;
     } else {
         // redirect to site saying no more counts
-        url = `./redirect/redirect.html?url=${redirectUrl}&site=${site}`;
+        url = `./redirect/redirect.html?url=${redirectUrl}`;
     }
     chrome.tabs.update(tabId, {
         url: url,
@@ -102,13 +102,13 @@ chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
                 chrome.webNavigation.onCommitted.addListener(
                     (details) => {
                         if (details.transitionType === 'reload') {
-                            redirectToPrompt(sites, site, details.url, tabId);
+                            redirectToPrompt(count, details.url, tabId);
                         }
                     },
                     { url: [{ urlContains: 'youtube.com' }] }
                 );
             } else {
-                redirectToPrompt(sites, site, changeInfo.url, tabId);
+                redirectToPrompt(count, changeInfo.url, tabId);
             }
         });
     }

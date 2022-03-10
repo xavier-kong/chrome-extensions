@@ -1,25 +1,17 @@
 const url = window.location.href;
 
-const regexUrl = /\S+url=(?<redirectUrl>\S+)&site=(?<siteName>\S+)/;
+const regexUrl = /\S+url=(?<redirectUrl>\S+)/;
 const match = regexUrl.exec(url);
 
-const { redirectUrl, siteName } = match.groups;
-
-const redirectButton = document.getElementById('redirect-button');
+const { redirectUrl } = match.groups;
 
 const redirectToUrl = () => {
     chrome.storage.local.get(['hide-yt-search'], async (result) => {
         if (result) {
             const data = {
                 'hide-yt-search': {
-                    date: result['hide-yt-search'].date,
-                    sites: {
-                        ...result['hide-yt-search'].sites,
-                        [siteName]: {
-                            ...result['hide-yt-search'].sites,
-                            forgive: true,
-                        },
-                    },
+                    ...result['hide-yt-search'],
+                    forgive: true,
                 },
             };
             await chrome.storage.local.set({
@@ -30,6 +22,7 @@ const redirectToUrl = () => {
     });
 };
 
+const redirectButton = document.getElementById('redirect-button');
 redirectButton.addEventListener('click', redirectToUrl);
 
 /*
