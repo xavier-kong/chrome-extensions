@@ -34,12 +34,8 @@ const setData = async () => {
     const data = {
         'hide-yt-search': {
             date: `${year}-${month}-${day}`,
-            sites: {
-                'https://www.youtube.com/feed/subscriptions': {
-                    count: 10,
-                    forgive: false,
-                },
-            },
+            count: 10,
+            forgive: false,
         },
     };
     await chrome.storage.local.set({
@@ -57,7 +53,7 @@ const checkDate = (date) => {
 chrome.windows.onCreated.addListener((window) => {
     chrome.storage.local.get(['hide-yt-search'], (result) => {
         if (result) {
-            const { date, sites } = result['hide-yt-search'];
+            const { date } = result['hide-yt-search'];
             if (!checkDate(date)) {
                 setData();
             }
@@ -66,15 +62,6 @@ chrome.windows.onCreated.addListener((window) => {
         }
     });
 });
-
-const getBadSite = (sites, url) => {
-    for (const site of sites) {
-        if (url.includes(site)) {
-            return site;
-        }
-    }
-    return false;
-};
 
 const redirectToPrompt = (sites, site, redirectUrl, tabId) => {
     let url;
@@ -90,52 +77,38 @@ const redirectToPrompt = (sites, site, redirectUrl, tabId) => {
 };
 
 chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
-    if (!changeInfo.url.includes('chrome-extension://')) {
+    if (
+        !changeInfo.url.includes('chrome-extension://') &&
+        changeInfo.url.includes('www.youtube.com/feed/subscriptions')
+    ) {
         chrome.storage.local.get(['hide-yt-search'], async (result) => {
-            const { date, sites } = result['hide-yt-search'];
-            const badSites = Object.keys(sites);
-            const site = getBadSite(badSites, changeInfo.url);
+            const { date, count, forgive } = result['hide-yt-search'];
 
-            if (site) {
-                if (sites[site].forgive) {
-                    // redirect and set data with new forgive
-                    const data = {
-                        'hide-yt-search': {
-                            date: date,
-                            sites: {
-                                ...result['hide-yt-search'].sites,
-                                [site]: {
-                                    count: (result['hide-yt-search'].sites[
-                                        site
-                                    ].count -= 1),
-                                    forgive: false,
-                                },
-                            },
-                        },
-                    };
+            if (forgive) {
+                // redirect and set data with new forgive
+                const data = {
+                    'hide-yt-search': {
+                        date: date,
+                        count: count - 1,
+                        forgive: false,
+                    },
+                };
+                await chrome.storage.local.set({
+                    'hide-yt-search': data['hide-yt-search'],
+                });
 
-                    await chrome.storage.local.set({
-                        'hide-yt-search': data['hide-yt-search'],
-                    });
+                // only set on exit
 
-                    // only set on exit
-
-                    chrome.webNavigation.onCommitted.addListener(
-                        (details) => {
-                            if (details.transitionType === 'reload') {
-                                redirectToPrompt(
-                                    sites,
-                                    site,
-                                    details.url,
-                                    tabId
-                                );
-                            }
-                        },
-                        { url: [{ urlContains: 'youtube.com' }] }
-                    );
-                } else {
-                    redirectToPrompt(sites, site, changeInfo.url, tabId);
-                }
+                chrome.webNavigation.onCommitted.addListener(
+                    (details) => {
+                        if (details.transitionType === 'reload') {
+                            redirectToPrompt(sites, site, details.url, tabId);
+                        }
+                    },
+                    { url: [{ urlContains: 'youtube.com' }] }
+                );
+            } else {
+                redirectToPrompt(sites, site, changeInfo.url, tabId);
             }
         });
     }
