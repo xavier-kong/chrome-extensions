@@ -8,13 +8,21 @@
         <link rel="stylesheet" href="style.css" />
     </head>
     <body>
-        <div id="div"></div>
-        <div id="text"></div>
+        <div id="start">
+            <p>Are you sure you would like to continue?</p>
+            <br />
+            <button id="start-no">No</button>
+            <button id="start-yes">Yes</button>
+        </div>
+        <div id="test">
+            <form id="test-form">
+                Enter password: <input type="password" />
+                <button type="submit" form="test-form">Submit</button>
+            </form>
+        </div>
         <div id="buttons">
-            <button>No</button>
             <button id="redirect-button">Yes</button>
         </div>
-        <div id="test">the test</div>
         <script src="redirect.js"></script>
     </body>
 </html>
