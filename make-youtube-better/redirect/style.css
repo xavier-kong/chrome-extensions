@@ -9,3 +9,6 @@ body a {
 #test {
     display: none;
 }
+#error {
+    color: red;
+}

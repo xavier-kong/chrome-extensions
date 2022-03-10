@@ -23,8 +23,11 @@ const redirectToUrl = () => {
     });
 };
 
-const redirectButton = document.getElementById('redirect-button');
-redirectButton.addEventListener('click', redirectToUrl);
+const generatePassword = () => {
+    const textDiv = document.getElementById('test-text');
+    const password = Math.random().toString(36).slice(-8);
+    textDiv.textContent = password;
+};
 
 const startNoButton = document.getElementById('start-no');
 startNoButton.onclick = (e) => {
@@ -35,11 +38,32 @@ startNoButton.onclick = (e) => {
 
 const startYesButton = document.getElementById('start-yes');
 startYesButton.onclick = () => {
+    generatePassword();
+
     const startDiv = document.getElementById('start');
     startDiv.style.display = 'none';
+
     const testDiv = document.getElementById('test');
     testDiv.style.display = 'block';
 };
 
+const generateError = () => {
+    const errorContainer = document.getElementById('error');
+    errorContainer.textContent = 'Wrong Password';
+    setTimeout(() => {
+        errorContainer.textContent = '';
+    }, 3500);
+};
+
 const testForm = document.getElementById('test-form');
-testForm.onsubmit = () => {};
+testForm.onsubmit = (e) => {
+    e.preventDefault();
+    const userInput = document.getElementById('form-input').value;
+    const password = document.getElementById('test-text').textContent;
+    if (userInput === password) {
+        redirectToUrl();
+    } else {
+        generateError();
+        generatePassword();
+    }
+};

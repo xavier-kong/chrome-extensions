@@ -16,12 +16,15 @@
         </div>
         <div id="test">
             <form id="test-form">
-                Enter password: <input type="password" />
+                <p>Your password is:</p>
+                <div id="test-text"></div>
+                <br />
+                Enter password:
+                <input id="form-input" type="password" autocomplete="off" />
                 <button type="submit" form="test-form">Submit</button>
             </form>
-        </div>
-        <div id="buttons">
-            <button id="redirect-button">Yes</button>
+            <br />
+            <div id="error"></div>
         </div>
         <script src="redirect.js"></script>
     </body>
