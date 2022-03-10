@@ -1,9 +1,14 @@
 const url = window.location.href;
 
-// const regexUrl = /\S+url=(?<redirectUrl>\S+)/;
-// const match = regexUrl.exec(url);
+const regexUrl = /\S+url=(?<redirectUrl>\S+)/;
+const match = regexUrl.exec(url);
 
-// const { redirectUrl } = match.groups;
+const { redirectUrl } = match.groups;
+
+chrome.storage.local.get(['hide-yt-search'], (result) => {
+    const displayCount = document.getElementById('display-count');
+    displayCount.textContent = `You have ${result['hide-yt-search'].count} visits remaining`;
+});
 
 const redirectToUrl = () => {
     chrome.storage.local.get(['hide-yt-search'], async (result) => {
