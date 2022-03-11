@@ -28,7 +28,6 @@ const hideThings = () => {
     }
 };
 
-
 document.body.onkeyup = (e) => {
     e.preventDefault();
     if (e.keyCode === 32 || e.keyCode === ' ') {

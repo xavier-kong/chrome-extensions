@@ -7,10 +7,6 @@
         {
             "matches": ["*://www.youtube.com/*"],
             "css": ["inject.css"]
-        },
-        {
-            "matches": ["*://www.youtube.com/watch?v*"],
-            "js": ["watchFocus.js"]
         }
     ],
     "permissions": ["tabs", "webNavigation", "storage", "webRequest"],
