@@ -66,9 +66,9 @@ chrome.windows.onCreated.addListener((window) => {
 const redirectToPrompt = (count, redirectUrl, tabId) => {
     let url;
     if (count > 0) {
-        url = `./redirect/redirect.html?url=${redirectUrl}`;
+        url = `./pages/redirect/redirect.html?url=${redirectUrl}`;
     } else {
-        url = `./no-more/no-more.html`;
+        url = `./pages/no-more/no-more.html`;
     }
     chrome.tabs.update(tabId, {
         url: url,
