@@ -1,3 +1,5 @@
+// redirect non playlist watching on youtube videos to motivational quote
+
 const eventList = ['onHistoryStateUpdated', 'onCompleted'];
 
 const filter = {
@@ -19,6 +21,8 @@ for (const event of eventList) {
         }
     }, filter);
 }
+
+// refresh counts when window is created and date is not the same
 
 const createDate = (dateString = new Date()) => {
     const date = new Date(dateString);
@@ -62,6 +66,8 @@ chrome.windows.onCreated.addListener((window) => {
         }
     });
 });
+
+// main logic for redirecting from youtube subcriptions page
 
 const redirectToPrompt = (count, redirectUrl, tabId) => {
     let url;
