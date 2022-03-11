@@ -12,7 +12,7 @@ const toggleDisplay = (dstyle) => {
 const checkHidden = () => {
     const commentDisplay = document.querySelector('#masthead-container').style
         .display;
-    if (commentDisplay === 'none') {
+    if (commentDisplay === 'none' || commentDisplay === '') {
         return true;
     } else {
         return false;

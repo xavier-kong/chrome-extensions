@@ -7,6 +7,11 @@
         {
             "matches": ["*://www.youtube.com/*"],
             "css": ["inject.css"]
+        },
+        {
+            "matches": ["*://www.youtube.com/watch?v*"],
+            "js": ["./watch-focus/watchFocus.js"],
+            "css": ["./watch-focus/hide.css"]
         }
     ],
     "permissions": ["tabs", "webNavigation", "storage", "webRequest"],

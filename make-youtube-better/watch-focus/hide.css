@@ -1,0 +1,6 @@
+#masthead-container,
+#info-contents,
+#meta-contents,
+#comments {
+    display: none;
+}
