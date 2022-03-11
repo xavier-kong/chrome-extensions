@@ -1,14 +1,7 @@
-#mouseover-overlay,
-img.yt-img-shadow,
 #footer,
 #center,
 #logo,
 #logo-icon,
-#country-code,
-#metadata-line.ytd-grid-video-renderer span.ytd-grid-video-renderer {
+#country-code {
     display: none !important;
-}
-
-ytd-thumbnail.ytd-grid-video-renderer {
-    height: 35px !important;
 }
