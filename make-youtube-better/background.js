@@ -68,8 +68,7 @@ const redirectToPrompt = (count, redirectUrl, tabId) => {
     if (count > 0) {
         url = `./redirect/redirect.html?url=${redirectUrl}`;
     } else {
-        // redirect to site saying no more counts
-        url = `./redirect/redirect.html?url=${redirectUrl}`;
+        url = `./no-more/no-more.html`;
     }
     chrome.tabs.update(tabId, {
         url: url,
@@ -96,8 +95,6 @@ chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
                 await chrome.storage.local.set({
                     'hide-yt-search': data['hide-yt-search'],
                 });
-
-                // only set on exit
 
                 chrome.webNavigation.onCommitted.addListener(
                     (details) => {
