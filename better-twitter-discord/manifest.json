@@ -1,0 +1,14 @@
+{
+    "name": "Better Twitter and Discord",
+    "description": "Making Twitter and Discord less addictive.",
+    "version": "1.0",
+    "manifest_version": 3,
+    "content_scripts": [
+        {
+            "matches": ["*://discord.com/*", "*://twitter.com/*"],
+            "css": ["inject.css"]
+        }
+    ],
+    "permissions": ["tabs", "webNavigation", "storage", "webRequest"],
+    "host_permissions": ["*://www.youtube.com/*"]
+}
