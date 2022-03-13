@@ -24,11 +24,11 @@ for (const event of eventList) {
 
 // refresh counts when window is created and date is not the same
 
-function createDate(dateString = new Date()) {
-    const date = new Date(dateString);
+function createDate(dateString) {
+    const date = dateString ? new Date(dateString) : new Date();
     return {
         day: date.getDate(),
-        month: date.getMonth(),
+        month: date.getMonth() + 1,
         year: date.getFullYear(),
     };
 }
