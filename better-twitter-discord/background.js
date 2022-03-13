@@ -31,7 +31,7 @@ async function setData(site) {
 function redirectToPrompt(count, redirectUrl, tabId) {
     let url;
     if (count > 0) {
-        url = `./pages/redirect/redirect.html?url=${redirectUrl}`;
+        url = `./pages/redirect/redirect.html?url=${redirectUrl}&site=${site}`;
     } else {
         url = `./pages/no-more/no-more.html`;
     }
