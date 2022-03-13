@@ -24,16 +24,16 @@ for (const event of eventList) {
 
 // refresh counts when window is created and date is not the same
 
-const createDate = (dateString = new Date()) => {
+function createDate(dateString = new Date()) {
     const date = new Date(dateString);
     return {
         day: date.getDate(),
         month: date.getMonth(),
         year: date.getFullYear(),
     };
-};
+}
 
-const setData = async () => {
+async function setData() {
     const { day, month, year } = createDate();
     const data = {
         'hide-yt-search': {
@@ -45,14 +45,14 @@ const setData = async () => {
     await chrome.storage.local.set({
         'hide-yt-search': data['hide-yt-search'],
     });
-};
+}
 
-const checkDate = (date) => {
+function checkDate(date) {
     const { day, month, year } = createDate();
     const { day: testDay, month: testMonth, year: testYear } = createDate(date);
 
     return day === testDay && month === testMonth && year === testYear;
-};
+}
 
 chrome.windows.onCreated.addListener((window) => {
     chrome.storage.local.get(['hide-yt-search'], (result) => {
@@ -69,7 +69,7 @@ chrome.windows.onCreated.addListener((window) => {
 
 // main logic for redirecting from youtube subcriptions page
 
-const redirectToPrompt = (count, redirectUrl, tabId) => {
+function redirectToPrompt(count, redirectUrl, tabId) {
     let url;
     if (count > 0) {
         url = `./pages/redirect/redirect.html?url=${redirectUrl}`;
@@ -79,7 +79,7 @@ const redirectToPrompt = (count, redirectUrl, tabId) => {
     chrome.tabs.update(tabId, {
         url: url,
     });
-};
+}
 
 chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
     if (
