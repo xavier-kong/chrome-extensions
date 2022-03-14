@@ -3,7 +3,7 @@
     "description": "Making it impossible to view youtube",
     "version": "1.0",
     "manifest_version": 3,
-    "permissions": ["tabs", "webNavigation", "storage", "webRequest"],
+    "permissions": ["tabs"],
     "host_permissions": ["*://www.youtube.com/*"],
     "background": {
         "service_worker": "background.js"

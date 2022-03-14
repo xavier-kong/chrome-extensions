@@ -15,7 +15,9 @@ for (const event of eventList) {
         const { tabId, url } = details;
         if (url.includes('youtube.com')) {
             if (url.includes('watch?v') && !url.includes('list=')) {
-                chrome.tabs.update(tabId, { url: 'ali.jpg' });
+                chrome.tabs.update(tabId, {
+                    url: 'https://thejobwindow.files.wordpress.com/2013/10/ali.jpg',
+                });
             }
             chrome.tabs.sendMessage(tabId, { command: 'hide-search' });
         }
