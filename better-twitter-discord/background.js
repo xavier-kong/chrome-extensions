@@ -131,7 +131,7 @@ function allowedTime() {
         if (changeInfo.url.includes(site)) {
             if (!allowedTime()) {
                 chrome.tabs.update(tabId, {
-                    url: 'https://thejobwindow.files.wordpress.com/2013/10/ali.jpg',
+                    url: './redirect/redirect.html',
                 });
             }
         }

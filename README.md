@@ -9,6 +9,8 @@ YouTube is one of, if not the most addictive platforms out there. People have co
 -   Hides the search bar on every page that contains the string 'youtube.com' in the URL
 -   Redirects to a motivational quote if watching a video that is not part of a playlist (to reduce impulsive watching)
 
-### Reference material
+### Acknoledgements
 
 -   Would like to thank Adam Jones for this extension https://github.com/domdomegg/hideytthumbnails-extension which gave me a cleaner approach to working with css in chrome extensions
+
+-   Would like to thank Mehdi Aoussiad for providing the inspiration for countdown timer https://javascript.plainenglish.io/building-a-countdown-timer-with-vanilla-javascript-d78d2ca7f180
