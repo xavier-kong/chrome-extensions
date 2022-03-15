@@ -1,0 +1,13 @@
+body {
+    color: #eee;
+    background: #121212;
+    text-align: center;
+}
+
+#countdown {
+    font-size: 300%;
+}
+
+p {
+    font-size: xx-large;
+}
