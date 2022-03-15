@@ -117,9 +117,19 @@
 //     });
 // });
 
+function isWeekend() {
+    const currentDay = new Date().getDay();
+    if (currentDay === 0 || currentDay === 6) {
+        return true;
+    } else {
+        return false;
+    }
+}
+
 function allowedTime() {
     const currentHour = new Date().getHours();
-    if (currentHour >= 18 && currentHour < 21) {
+    const startHour = isWeekend() ? 16 : 18;
+    if (currentHour >= startHour && currentHour < 21) {
         return true;
     } else {
         return false;
