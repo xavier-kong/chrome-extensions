@@ -3,12 +3,11 @@ body {
     background: #121212;
     text-align: center;
 }
-body a {
-    color: #809fff;
+
+#countdown {
+    font-size: 300%;
 }
-#test {
-    display: none;
-}
-#error {
-    color: red;
+
+p {
+    font-size: xx-large;
 }

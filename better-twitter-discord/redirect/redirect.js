@@ -1,12 +1,3 @@
-/*
-if timer = 0
-    show two buttons to allow user to select between discord or twitter
-
-timer update:
-
-https://javascript.plainenglish.io/building-a-countdown-timer-with-vanilla-javascript-d78d2ca7f180
-*/
-
 function getDiff() {
     const final = new Date();
     if (final.getHours > 21) {
@@ -32,9 +23,9 @@ function timer() {
     minutes <= 9 ? (minutes = `0${minutes}`) : minutes;
     seconds <= 9 ? (seconds = `0${seconds}`) : seconds;
 
-    const timeString = `${hours}: ${minutes}: ${seconds}`;
+    const timeString = `${hours} : ${minutes} : ${seconds}`;
 
-    // update dom
+    document.querySelector('#countdown').textContent = timeString;
 }
 
 timer();
