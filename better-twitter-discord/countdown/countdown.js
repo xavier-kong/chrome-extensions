@@ -1,6 +1,6 @@
 function getDiff() {
     const final = new Date();
-    if (final.getHours > 21) {
+    if (final.getHours() > 21) {
         final.setDate(final.getDate() + 1);
     }
     final.setHours(18);
