@@ -1,9 +1,9 @@
 const toggleDisplay = (dstyle) => {
     [
         '#masthead-container',
-        '#info-contents',
         '#meta-contents',
         '#comments',
+        '#info-contents',
     ].forEach((element) => {
         document.querySelector(element).style.display = dstyle;
     });
