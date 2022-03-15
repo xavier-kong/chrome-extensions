@@ -141,7 +141,7 @@ function allowedTime() {
         if (changeInfo.url.includes(site)) {
             if (!allowedTime()) {
                 chrome.tabs.update(tabId, {
-                    url: './redirect/redirect.html',
+                    url: './countdown/countdown.html',
                 });
             }
         }

@@ -56,6 +56,25 @@ function checkDate(date) {
     return day === testDay && month === testMonth && year === testYear;
 }
 
+function isWeekend() {
+    const currentDay = new Date().getDay();
+    if (currentDay === 0 || currentDay === 6) {
+        return true;
+    } else {
+        return false;
+    }
+}
+
+function allowedTime() {
+    const currentHour = new Date().getHours();
+    const startHour = isWeekend() ? 16 : 18;
+    if (currentHour >= startHour && currentHour < 19) {
+        return true;
+    } else {
+        return false;
+    }
+}
+
 chrome.windows.onCreated.addListener((window) => {
     chrome.storage.local.get(['hide-yt-search'], (result) => {
         if (result) {
@@ -84,7 +103,11 @@ function redirectToPrompt(count, redirectUrl, tabId) {
 }
 
 chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
-    if (
+    if (changeInfo.url.includes('www.youtube.com') && !allowedTime()) {
+        chrome.tabs.update(tabId, {
+            url: './pages/countdown/countdown.html',
+        });
+    } else if (
         !changeInfo.url.includes('chrome-extension://') &&
         changeInfo.url.includes('www.youtube.com/feed/subscriptions')
     ) {
