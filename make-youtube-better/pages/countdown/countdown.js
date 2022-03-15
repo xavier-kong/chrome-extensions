@@ -1,9 +1,22 @@
+function isWeekend() {
+    const currentDay = new Date().getDay();
+    if (currentDay === 0 || currentDay === 6) {
+        return true;
+    } else {
+        return false;
+    }
+}
+
 function getDiff() {
     const final = new Date();
     if (final.getHours() > 21) {
         final.setDate(final.getDate() + 1);
     }
-    final.setHours(18);
+    if (isWeekend()) {
+        final.setHours(16);
+    } else {
+        final.setHours(18);
+    }
     final.setMinutes(0);
     final.setSeconds(0);
     final.setMilliseconds(0);
