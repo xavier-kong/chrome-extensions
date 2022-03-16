@@ -1,0 +1,17 @@
+{
+    "name": "YouTube Playlist Length Calculator",
+    "description": "Get total duration of videos in a YouTube playlist",
+    "version": "1.0",
+    "manifest_version": 3,
+    "permissions": [
+        "tabs",
+        "webNavigation",
+        "storage",
+        "webRequest",
+        "scripting"
+    ],
+    "host_permissions": ["*://www.youtube.com/*"],
+    "background": {
+        "service_worker": "background.js"
+    }
+}
