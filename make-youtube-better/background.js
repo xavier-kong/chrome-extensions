@@ -67,8 +67,8 @@ function isWeekend() {
 
 function allowedTime() {
     const currentHour = new Date().getHours();
-    const startHour = isWeekend() ? 16 : 18;
-    if (currentHour >= startHour && currentHour < 19) {
+    const startHour = isWeekend() ? 16 : 17;
+    if (currentHour >= startHour && currentHour < 21) {
         return true;
     } else {
         return false;
@@ -138,6 +138,18 @@ chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
             } else {
                 redirectToPrompt(count, changeInfo.url, tabId);
             }
+        });
+    } else if (
+        !changeInfo.url.includes('chrome-extension://') &&
+        changeInfo.url.includes('www.youtube.com/watch?v')
+    ) {
+        chrome.scripting.executeScript({
+            target: { tabId: tabId },
+            files: ['./watch-focus/watchFocus.js'],
+        });
+        chrome.scripting.insertCSS({
+            target: { tabId: tabId },
+            files: ['./watch-focus/hide.css'],
         });
     }
 });
