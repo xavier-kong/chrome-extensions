@@ -1,11 +1,17 @@
 {
-    "name": "Better Twitter and Discord",
-    "description": "Making Twitter and Discord less addictive.",
+    "name": "Stay Productive",
+    "description": "Reducing social media use to you can do the things you actually enjoy.",
     "version": "1.0",
     "manifest_version": 3,
     "content_scripts": [
         {
-            "matches": ["*://discord.com/*", "*://twitter.com/*"],
+            "matches": [
+                "*://discord.com/*",
+                "*://twitter.com/*",
+                "*://instagram.com/*",
+                "://facebook.com/*",
+                "://linkedin.com/*"
+            ],
             "css": ["inject.css"]
         }
     ],
