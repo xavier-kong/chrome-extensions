@@ -143,13 +143,15 @@ chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
         !changeInfo.url.includes('chrome-extension://') &&
         changeInfo.url.includes('www.youtube.com/watch?v')
     ) {
-        chrome.scripting.executeScript({
-            target: { tabId: tabId },
-            files: ['./watch-focus/watchFocus.js'],
-        });
-        chrome.scripting.insertCSS({
-            target: { tabId: tabId },
-            files: ['./watch-focus/hide.css'],
-        });
+        setTimeout(() => {
+            chrome.scripting.executeScript({
+                target: { tabId: tabId },
+                files: ['./watch-focus/watchFocus.js'],
+            });
+            chrome.scripting.insertCSS({
+                target: { tabId: tabId },
+                files: ['./watch-focus/hide.css'],
+            });
+        }, 750);
     }
 });

@@ -8,9 +8,9 @@
             "matches": [
                 "*://discord.com/*",
                 "*://twitter.com/*",
-                "*://instagram.com/*",
-                "*://facebook.com/*",
-                "*://linkedin.com/*"
+                "*://www.instagram.com/*",
+                "*://www.facebook.com/*",
+                "*://www.linkedin.com/*"
             ],
             "css": ["inject.css"]
         }
