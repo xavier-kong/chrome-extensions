@@ -9,8 +9,8 @@
                 "*://discord.com/*",
                 "*://twitter.com/*",
                 "*://instagram.com/*",
-                "://facebook.com/*",
-                "://linkedin.com/*"
+                "*://facebook.com/*",
+                "*://linkedin.com/*"
             ],
             "css": ["inject.css"]
         }

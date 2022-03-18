@@ -58,7 +58,7 @@ function checkDate(date) {
 
 function isWeekend() {
     const currentDay = new Date().getDay();
-    if (currentDay === 0 || currentDay === 6) {
+    if (currentDay === 0 || currentDay === 6 || currentDay === 5) {
         return true;
     } else {
         return false;
