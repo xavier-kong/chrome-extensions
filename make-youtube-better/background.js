@@ -14,10 +14,21 @@ for (const event of eventList) {
     chrome.webNavigation[event].addListener(async (details) => {
         const { tabId, url } = details;
         if (url.includes('youtube.com')) {
-            if (url.includes('watch?v') && !url.includes('list=')) {
-                chrome.tabs.update(tabId, {
-                    url: 'https://thejobwindow.files.wordpress.com/2013/10/ali.jpg',
-                });
+            if (url.includes('watch?v')) {
+                if (url.includes('list=')) {
+                    insertHideCSS(tabId);
+                    setTimeout(() => {
+                        chrome.scripting.executeScript({
+                            target: { tabId: tabId },
+                            files: ['./watch-focus/watchFocus.js'],
+                        });
+                        insertHideCSS(tabId);
+                    }, 750);
+                } else {
+                    chrome.tabs.update(tabId, {
+                        url: 'https://thejobwindow.files.wordpress.com/2013/10/ali.jpg',
+                    });
+                }
             }
             chrome.tabs.sendMessage(tabId, { command: 'hide-search' });
         }
@@ -67,7 +78,7 @@ function isWeekend() {
 
 function allowedTime() {
     const currentHour = new Date().getHours();
-    const startHour = isWeekend() ? 16 : 18;
+    const startHour = isWeekend() ? 15 : 18;
     if (currentHour >= startHour && currentHour < 21) {
         return true;
     } else {
@@ -99,6 +110,13 @@ function redirectToPrompt(count, redirectUrl, tabId) {
     }
     chrome.tabs.update(tabId, {
         url: url,
+    });
+}
+
+function insertHideCSS(tabId) {
+    chrome.scripting.insertCSS({
+        target: { tabId: tabId },
+        files: ['./watch-focus/hide.css'],
     });
 }
 
@@ -143,15 +161,9 @@ chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
         !changeInfo.url.includes('chrome-extension://') &&
         changeInfo.url.includes('www.youtube.com/watch?v')
     ) {
+        insertHideCSS(tabId);
         setTimeout(() => {
-            chrome.scripting.executeScript({
-                target: { tabId: tabId },
-                files: ['./watch-focus/watchFocus.js'],
-            });
-            chrome.scripting.insertCSS({
-                target: { tabId: tabId },
-                files: ['./watch-focus/hide.css'],
-            });
+            insertHideCSS(tabId);
         }, 750);
     }
 });
