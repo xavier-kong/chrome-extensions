@@ -27,16 +27,21 @@ const sites = [
     'linkedin.com',
 ];
 
-sites.forEach((site) => {
-    chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
-        if (changeInfo.url.includes(site)) {
-            if (!allowedTime()) {
-                chrome.tabs.update(tabId, {
-                    url: './countdown/countdown.html',
-                });
-            }
+function isBadSite(url) {
+    for (let i = 0; i < sites.length; i++) {
+        if (url.includes(site[i])) {
+            return true;
         }
-    });
+    }
+    return false;
+}
+
+chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
+    if (isBadSite(changeInfo.url) && !allowedTime()) {
+        chrome.tabs.update(tabId, {
+            url: './countdown/countdown.html',
+        });
+    }
 });
 
 // to set data on window created
@@ -87,4 +92,3 @@ chrome.windows.onCreated.addListener((window) => {
 });
 
 // to redirect user based on remaining visits allowed
-
