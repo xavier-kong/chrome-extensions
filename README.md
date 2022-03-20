@@ -27,4 +27,3 @@ YouTube is one of, if not the most addictive platforms out there. People have co
 -   Would like to thank Mehdi Aoussiad for providing the inspiration for countdown timer https://javascript.plainenglish.io/building-a-countdown-timer-with-vanilla-javascript-d78d2ca7f180
 
 ## Stay Productive
-
