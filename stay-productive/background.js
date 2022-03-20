@@ -19,30 +19,14 @@ function allowedTime() {
     }
 }
 
-const sites = [
-    'discord.com',
-    'twitter.com',
-    'instagram.com',
-    'facebook.com',
-    'linkedin.com',
-];
-
-function isBadSite(url) {
+function isBadSite(url, sites) {
     for (let i = 0; i < sites.length; i++) {
-        if (url.includes(site[i])) {
+        if (url.includes(sites[i])) {
             return true;
         }
     }
     return false;
 }
-
-chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
-    if (isBadSite(changeInfo.url) && !allowedTime()) {
-        chrome.tabs.update(tabId, {
-            url: './countdown/countdown.html',
-        });
-    }
-});
 
 // to set data on window created
 
@@ -60,10 +44,12 @@ async function setData() {
     const data = {
         'stay-productive': {
             date: `${year}-${month}-${day}`,
-            'twitter.com': 1,
-            'instagram.com': 1,
-            'facebook.com': 1,
-            'linkedin.com': 1,
+            sites: [
+                { name: 'twitter.com', count: 1, forgive: false },
+                { name: 'instagram.com', count: 1, forgive: false },
+                { name: 'facebook.com', count: 1, forgive: false },
+                { name: 'linkedin.com', count: 1, forgive: false },
+            ],
         },
     };
     await chrome.storage.local.set({
@@ -91,4 +77,58 @@ chrome.windows.onCreated.addListener((window) => {
     });
 });
 
-// to redirect user based on remaining visits allowed
+// to redirect user based on site type, current time and remaining visits allowed
+
+const sites = [
+    'discord.com',
+    'twitter.com',
+    'instagram.com',
+    'facebook.com',
+    'linkedin.com',
+];
+
+function visitAllowed(url) {
+    chrome.storage.local.get(['stay-productive'], async (result) => {
+        const { sites } = result['stay-productive'];
+
+        for (let i = 0; i < sites.length; i++) {
+            const site = sites[i];
+            if (url.includes(site.name)) {
+                if (site.forgive) {
+                    return true;
+                } else if (site.count === 1) {
+                    return true;
+                } else if (site.count === 0) {
+                    return false;
+                }
+            }
+        }
+    });
+}
+
+/*
+if forgive:
+    allow to url without any redirection
+if not forgive:
+    if count = 1:
+        redirect to check page
+    else if count = 0:
+        redirect to block page
+*/
+
+chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
+    if (isBadSite(changeInfo.url, sites)) {
+        if (allowedTime() && !changeInfo.url.includes('discord.com')) {
+            // logic to check remaining visits
+            // if 1 redirect to check
+            // if 0 redirect to block page
+            if (visitAllowed(changeInfo.url)) {
+            } else {
+            }
+        } else {
+            chrome.tabs.update(tabId, {
+                url: './countdown/countdown.html',
+            });
+        }
+    }
+});
