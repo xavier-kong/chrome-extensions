@@ -22,7 +22,7 @@ function allowedTime() {
 function isBadSite(url, sites) {
     for (let i = 0; i < sites.length; i++) {
         if (url.includes(sites[i])) {
-            return true;
+            return sites[i];
         }
     }
     return false;
@@ -87,43 +87,34 @@ const sites = [
     'linkedin.com',
 ];
 
-function visitAllowed(url) {
+function getSiteFate(site) {
     chrome.storage.local.get(['stay-productive'], async (result) => {
         const { sites } = result['stay-productive'];
 
         for (let i = 0; i < sites.length; i++) {
-            const site = sites[i];
-            if (url.includes(site.name)) {
-                if (site.forgive) {
-                    return true;
-                } else if (site.count === 1) {
-                    return true;
-                } else if (site.count === 0) {
-                    return false;
+            const { name, count, forgive } = sites[i];
+            if (name === site) {
+                if (forgive) {
+                    return 'forgive';
+                } else if (count === 1) {
+                    return 'redirect';
+                } else if (count === 0) {
+                    return 'block';
                 }
             }
         }
     });
 }
 
-/*
-if forgive:
-    allow to url without any redirection
-if not forgive:
-    if count = 1:
-        redirect to check page
-    else if count = 0:
-        redirect to block page
-*/
-
 chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
-    if (isBadSite(changeInfo.url, sites)) {
-        if (allowedTime() && !changeInfo.url.includes('discord.com')) {
-            // logic to check remaining visits
-            // if 1 redirect to check
-            // if 0 redirect to block page
-            if (visitAllowed(changeInfo.url)) {
-            } else {
+    const site = isBadSite(changeInfo.url, sites);
+    if (site) {
+        if (allowedTime()) {
+            const siteFate = getSiteFate(site);
+            if (siteFate === 'redirect') {
+                // redirect to check page
+            } else if (siteFate === 'block') {
+                // redirect to block page
             }
         } else {
             chrome.tabs.update(tabId, {
