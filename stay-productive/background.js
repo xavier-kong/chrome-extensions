@@ -12,7 +12,7 @@ function isWeekend() {
 function allowedTime() {
     const currentHour = new Date().getHours();
     const startHour = isWeekend() ? 16 : 18;
-    if (currentHour >= startHour && currentHour < 21) {
+    if (currentHour >= startHour && currentHour < 22) {
         return true;
     } else {
         return false;
@@ -46,9 +46,9 @@ async function setData() {
             date: `${year}-${month}-${day}`,
             sites: [
                 { name: 'twitter.com', count: 1, forgive: false },
-                { name: 'instagram.com', count: 1, forgive: false },
+                { name: 'instagram.com', count: 2, forgive: false },
                 { name: 'facebook.com', count: 1, forgive: false },
-                { name: 'linkedin.com', count: 1, forgive: false },
+                { name: 'linkedin.com', count: 2, forgive: false },
             ],
         },
     };
@@ -98,7 +98,7 @@ async function getSiteFate(site) {
                 if (name === site) {
                     if (forgive) {
                         return 'forgive';
-                    } else if (count === 1) {
+                    } else if (count >= 1) {
                         return 'redirect';
                     } else if (count === 0) {
                         return 'block';
@@ -119,10 +119,8 @@ chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
 
                 for (let i = 0; i < sites.length; i++) {
                     const { name, count, forgive } = sites[i];
-                    if (name === site) {
-                        if (forgive) {
-                            // nonen
-                        } else if (count === 1) {
+                    if (name === site && !forgive) {
+                        if (count === 1) {
                             chrome.tabs.update(tabId, {
                                 url: `./pages/redirect/redirect.html?url=${changeInfo.url}`,
                             });

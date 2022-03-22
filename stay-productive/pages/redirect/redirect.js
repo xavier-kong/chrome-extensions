@@ -55,10 +55,11 @@ const redirectToUrl = () => {
             for (let i = 0; i < sites.length; i++) {
                 if (sites[i].name === site.name) {
                     sites[i].forgive = true;
+                    sites[i].count -= 1;
                 }
             }
             await chrome.storage.local.set({
-                'stay-productive': data['stay-productive'],
+                'stay-productive': result['stay-productive'],
             });
 
             window.location.href = redirectUrl;
