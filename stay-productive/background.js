@@ -107,12 +107,15 @@ function getSiteFate(site) {
 }
 
 chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
+    console.log(changeInfo);
     const site = isBadSite(changeInfo.url, sites);
     if (site) {
         if (allowedTime()) {
             const siteFate = getSiteFate(site);
             if (siteFate === 'redirect') {
-                // redirect to check page
+                chrome.tabs.update(tabId, {
+                    url: `./pages/redirect/redirect.html?url=${redirectUrl}`,
+                });
             } else if (siteFate === 'block') {
                 // redirect to block page
             }
