@@ -7,19 +7,11 @@ const match = regexUrl.exec(url);
 
 const { redirectUrl } = match.groups;
 
-let site;
-
 // to display the remaining amount of visits remaining
 
-chrome.storage.local.get(['stay-productive+'], (result) => {
-    const { sites } = result['stay-productive'];
-    for (let i = 0; i < sites.length; i++) {
-        if (redirectUrl.includes(sites[i].name)) {
-            site = sites[i];
-        }
-    }
+chrome.storage.local.get(['hide-yt-search'], (result) => {
     const displayCount = document.getElementById('display-count');
-    displayCount.textContent = `You have ${site.count} visits remaining for ${site.name}`;
+    displayCount.textContent = `You have ${result['hide-yt-search'].count} visits remaining`;
 });
 
 // handles the no button on initial render
@@ -47,16 +39,16 @@ startYesButton.onclick = () => {
 // for handling password check and redirect logic
 
 const redirectToUrl = () => {
-    chrome.storage.local.get(['stay-productive'], async (result) => {
+    chrome.storage.local.get(['hide-yt-search'], async (result) => {
         if (result) {
-            const { sites } = result['stay-productive'];
-            for (let i = 0; i < sites.length; i++) {
-                if (sites[i].name === site.name) {
-                    sites[i].forgive = true;
-                }
-            }
+            const data = {
+                'hide-yt-search': {
+                    ...result['hide-yt-search'],
+                    forgive: true,
+                },
+            };
             await chrome.storage.local.set({
-                'stay-productive': data['stay-productive'],
+                'hide-yt-search': data['hide-yt-search'],
             });
 
             window.location.href = redirectUrl;
