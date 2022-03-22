@@ -87,38 +87,51 @@ const sites = [
     'linkedin.com',
 ];
 
-function getSiteFate(site) {
-    chrome.storage.local.get(['stay-productive'], async (result) => {
-        const { sites } = result['stay-productive'];
+async function getSiteFate(site) {
+    const fate = await chrome.storage.local.get(
+        ['stay-productive'],
+        async (result) => {
+            const { sites } = result['stay-productive'];
 
-        for (let i = 0; i < sites.length; i++) {
-            const { name, count, forgive } = sites[i];
-            if (name === site) {
-                if (forgive) {
-                    return 'forgive';
-                } else if (count === 1) {
-                    return 'redirect';
-                } else if (count === 0) {
-                    return 'block';
+            for (let i = 0; i < sites.length; i++) {
+                const { name, count, forgive } = sites[i];
+                if (name === site) {
+                    if (forgive) {
+                        return 'forgive';
+                    } else if (count === 1) {
+                        return 'redirect';
+                    } else if (count === 0) {
+                        return 'block';
+                    }
                 }
             }
         }
-    });
+    );
+    return fate;
 }
 
 chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
-    console.log(changeInfo);
     const site = isBadSite(changeInfo.url, sites);
-    if (site) {
+    if (site && !changeInfo.url.includes('chrome-extension://')) {
         if (allowedTime()) {
-            const siteFate = getSiteFate(site);
-            if (siteFate === 'redirect') {
-                chrome.tabs.update(tabId, {
-                    url: `./pages/redirect/redirect.html?url=${redirectUrl}`,
-                });
-            } else if (siteFate === 'block') {
-                // redirect to block page
-            }
+            chrome.storage.local.get(['stay-productive'], async (result) => {
+                const { sites } = result['stay-productive'];
+
+                for (let i = 0; i < sites.length; i++) {
+                    const { name, count, forgive } = sites[i];
+                    if (name === site) {
+                        if (forgive) {
+                            // nonen
+                        } else if (count === 1) {
+                            chrome.tabs.update(tabId, {
+                                url: `./pages/redirect/redirect.html?url=${changeInfo.url}`,
+                            });
+                        } else if (count === 0) {
+                            // block
+                        }
+                    }
+                }
+            });
         } else {
             chrome.tabs.update(tabId, {
                 url: './countdown/countdown.html',
