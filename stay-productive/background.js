@@ -46,9 +46,9 @@ async function setData() {
             date: `${year}-${month}-${day}`,
             sites: [
                 { name: 'twitter.com', count: 1, forgive: false },
-                { name: 'instagram.com', count: 2, forgive: false },
+                { name: 'instagram.com', count: 1, forgive: false },
                 { name: 'facebook.com', count: 1, forgive: false },
-                { name: 'linkedin.com', count: 2, forgive: false },
+                { name: 'linkedin.com', count: 1, forgive: false },
             ],
         },
     };
@@ -84,7 +84,7 @@ const sites = [
     'twitter.com',
     'instagram.com',
     'facebook.com',
-    // 'linkedin.com',
+    'linkedin.com',
 ];
 
 async function getSiteFate(site) {
@@ -110,6 +110,15 @@ async function getSiteFate(site) {
     return fate;
 }
 
+function noRelatedTabs(result, name) {
+    for (let i = 0; i < result.length; i++) {
+        if (result[i].url.includes(name)) {
+            return false;
+        }
+    }
+    return true;
+}
+
 chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
     const site = isBadSite(changeInfo.url, sites);
     if (site && !changeInfo.url.includes('chrome-extension://')) {
@@ -123,17 +132,21 @@ chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
                         if (forgive) {
                             chrome.tabs.onRemoved.addListener((newTabId) => {
                                 if (tabId === newTabId) {
-                                    sites[i].forgive = false;
-                                    const data = {
-                                        'stay-productive': {
-                                            date: date,
-                                            sites: sites,
-                                        },
-                                    };
+                                    chrome.tabs.query({}, (result) => {
+                                        if (noRelatedTabs(result, name)) {
+                                            sites[i].forgive = false;
+                                            const data = {
+                                                'stay-productive': {
+                                                    date: date,
+                                                    sites: sites,
+                                                },
+                                            };
 
-                                    chrome.storage.local.set({
-                                        'stay-productive':
-                                            data['stay-productive'],
+                                            chrome.storage.local.set({
+                                                'stay-productive':
+                                                    data['stay-productive'],
+                                            });
+                                        }
                                     });
                                 }
                             });

@@ -51,7 +51,7 @@ async function setData() {
     const data = {
         'hide-yt-search': {
             date: `${year}-${month}-${day}`,
-            count: 3,
+            count: 4,
             forgive: false,
         },
     };
