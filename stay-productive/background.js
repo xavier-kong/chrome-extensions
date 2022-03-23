@@ -84,7 +84,7 @@ const sites = [
     'twitter.com',
     'instagram.com',
     'facebook.com',
-    'linkedin.com',
+    // 'linkedin.com',
 ];
 
 async function getSiteFate(site) {
