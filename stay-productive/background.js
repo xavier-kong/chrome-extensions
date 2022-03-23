@@ -134,7 +134,7 @@ chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
             });
         } else {
             chrome.tabs.update(tabId, {
-                url: './countdown/countdown.html',
+                url: './pages/countdown/countdown.html',
             });
         }
     }
