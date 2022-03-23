@@ -125,7 +125,9 @@ chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
                                 url: `./pages/redirect/redirect.html?url=${changeInfo.url}`,
                             });
                         } else if (count === 0) {
-                            // block
+                            chrome.tabs.update(tabId, {
+                                url: `./pages/block/block.html`,
+                            });
                         }
                     }
                 }
