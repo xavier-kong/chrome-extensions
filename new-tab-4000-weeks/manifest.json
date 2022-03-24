@@ -1,0 +1,10 @@
+{
+    "name": "4000 Weeks Reminder",
+    "description": "A reminder that we only have 4000 weeks in our lives.",
+    "version": "1.0",
+    "manifest_version": 3,
+    "permissions": ["tabs", "window"],
+    "background": {
+        "service_worker": "background.js"
+    }
+}
