@@ -3,9 +3,8 @@
     "description": "A reminder that we only have 4000 weeks in our lives.",
     "version": "1.0",
     "manifest_version": 3,
-    "permissions": ["tabs"],
-    "background": {
-        "service_worker": "background.js",
-        "type": "module"
+    "permissions": ["tabs", "scripting"],
+    "chrome_url_overrides": {
+        "newtab": "./index.html"
     }
 }
