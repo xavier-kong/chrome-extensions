@@ -5,6 +5,7 @@
     "manifest_version": 3,
     "permissions": ["tabs"],
     "background": {
-        "service_worker": "background.js"
+        "service_worker": "background.js",
+        "type": "module"
     }
 }
