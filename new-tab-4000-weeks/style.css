@@ -8,8 +8,7 @@ p {
     font-size: large;
 }
 
-#display,
-#error {
+#display {
     display: none;
 }
 
