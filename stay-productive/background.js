@@ -49,6 +49,7 @@ async function setData() {
                 { name: 'instagram.com', count: 1, forgive: false },
                 { name: 'facebook.com', count: 1, forgive: false },
                 { name: 'linkedin.com', count: 1, forgive: false },
+                { name: 'discord.com', count: 5, forgive: false },
             ],
         },
     };

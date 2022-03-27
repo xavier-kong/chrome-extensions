@@ -54,20 +54,26 @@ input {
     border-radius: 2px;
 }
 
+/* #battery:after {
+    content: '';
+    display: block;
+    background: transparent;
+    border: 6px solid #ffffff;
+    margin: 0px 80px;
+    width: 6px;
+    height: 16px;
+    position: absolute;
+    border-radius: 2px;
+} */
+
 #battery:after {
     content: '';
     display: block;
     background: #fff;
-    /* background: transparent; */
-    /* border: 6px solid #ffffff; */
     border: 0.8vw solid #ffffff;
-    /* margin: 0px 80px */
     margin: 0px 7.5vw;
     width: 0vh;
-    /* width: 6px; */
-    /* height: 16px; */
     height: 2.22vh;
-    /* position: absolute; */
     position: sticky;
     border-radius: 2px;
 }
