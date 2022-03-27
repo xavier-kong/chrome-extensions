@@ -28,12 +28,12 @@ const hideThings = () => {
     }
 };
 
-document.body.onkeyup = (e) => {
-    e.preventDefault();
-    if (e.keyCode === 32 || e.keyCode === ' ') {
-        hideThings();
-    }
-};
+// document.body.onkeyup = (e) => {
+//     e.preventDefault();
+//     if (e.keyCode === 32 || e.keyCode === ' ') {
+//         hideThings();
+//     }
+// };
 
 document.querySelector(
     '#movie_player > div.ytp-chrome-bottom > div.ytp-chrome-controls > div.ytp-left-controls > button'
