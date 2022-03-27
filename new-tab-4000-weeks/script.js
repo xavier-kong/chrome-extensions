@@ -49,10 +49,15 @@ function calculateWeeks(year) {
     const yearsLeft = 87 - age;
     const remainingWeeksInYear = 52 - getWeeks();
     const weeksLeft = 52 * yearsLeft + remainingWeeksInYear;
-    return weeksLeft;
+    return {
+        weeksLeft,
+        percentage: weeksLeft * 100,
+    };
 }
 
-function generateVisual() {}
+function generateVisual() {
+    calculateWeeks(year);
+}
 
 const form = document.getElementById('form');
 form.onsubmit = async (e) => {
