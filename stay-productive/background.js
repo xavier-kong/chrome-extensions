@@ -12,7 +12,7 @@ function isWeekend() {
 function allowedTime() {
     const currentHour = new Date().getHours();
     const startHour = isWeekend() ? 14 : 18;
-    if (currentHour >= startHour && currentHour < 22) {
+    if (currentHour >= startHour && currentHour < 23) {
         return true;
     } else {
         return false;

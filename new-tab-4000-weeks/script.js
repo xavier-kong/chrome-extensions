@@ -15,36 +15,44 @@ function isValidInput(input) {
     const year = parseInt(input);
     if (input.length === 4 && year) {
         // the oldest living person in world Ms. Kane Tanaka was born in 1903
-        if (year < new Date().getFullYear && year >= 1903) {
+        if (year < new Date().getFullYear() && year >= 1903) {
             return year;
         }
     }
     return false;
 }
 
-const generateError = () => {
+function generateError() {
     const errorContainer = document.getElementById('error');
     errorContainer.textContent = 'Please enter a valid year.';
     setTimeout(() => {
         errorContainer.textContent = '';
     }, 3500);
-};
+}
 
 function hidePrompt() {
     const promptDiv = document.getElementById('prompt');
     promptDiv.style.display = 'none';
 }
 
+function getWeeks() {
+    currentDate = new Date();
+    startDate = new Date(currentDate.getFullYear(), 0, 1);
+    const days = Math.floor((currentDate - startDate) / (24 * 60 * 60 * 1000));
+
+    return Math.ceil((currentDate.getDay() + 1 + days) / 7);
+}
+
 function calculateWeeks(year) {
-    const currentYear = new Date().getFullYear;
-    const yearsLeft = 88 - currentYear;
-    const weeksLeft = 52 * yearsLeft;
+    const today = new Date();
+    const age = today.getFullYear() - year;
+    const yearsLeft = 87 - age;
+    const remainingWeeksInYear = 52 - getWeeks();
+    const weeksLeft = 52 * yearsLeft + remainingWeeksInYear;
     return weeksLeft;
 }
 
-function generateVisual() {
-    const weeks = calculateWeeks(year);
-}
+function generateVisual() {}
 
 const form = document.getElementById('form');
 form.onsubmit = async (e) => {
@@ -52,9 +60,9 @@ form.onsubmit = async (e) => {
     const userInput = isValidInput(document.getElementById('input').value);
     form.reset();
     if (userInput) {
-        await chrome.storage.local.set({
-            birthYear: userInput,
-        });
+        // await chrome.storage.local.set({
+        //     birthYear: userInput,
+        // });
         year = userInput;
         hidePrompt();
 
@@ -65,3 +73,5 @@ form.onsubmit = async (e) => {
         generateError();
     }
 };
+
+generateVisual();

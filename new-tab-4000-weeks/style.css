@@ -8,7 +8,11 @@ p {
     font-size: large;
 }
 
-#display {
+/* #display {
+    display: none;
+} */
+
+#prompt {
     display: none;
 }
 
