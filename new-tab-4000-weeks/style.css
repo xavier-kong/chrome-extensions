@@ -33,10 +33,11 @@ input {
     display: block;
     margin: 35px 0 0 5px;
     background: #07ec1a;
-    width: 12%;
+    /* width: 12%; */
+    width: 11vw;
     height: 28px;
     float: left;
-    margin-left: 250px;
+    margin-left: 43vw;
 }
 
 #battery:before {
@@ -45,8 +46,10 @@ input {
     background: transparent;
     border: 6px solid #ffffff;
     margin: -12px;
-    width: 85px;
-    height: 40px;
+    /* width: 85px; */
+    width: 8vw;
+    /* height: 40px; */
+    height: 6vh;
     position: absolute;
     border-radius: 2px;
 }
@@ -54,11 +57,17 @@ input {
 #battery:after {
     content: '';
     display: block;
-    background: transparent;
-    border: 6px solid #ffffff;
-    margin: 0px 80px;
-    width: 6px;
-    height: 16px;
-    position: absolute;
+    background: #fff;
+    /* background: transparent; */
+    /* border: 6px solid #ffffff; */
+    border: 0.8vw solid #ffffff;
+    /* margin: 0px 80px */
+    margin: 0px 7.5vw;
+    width: 0vh;
+    /* width: 6px; */
+    /* height: 16px; */
+    height: 2.22vh;
+    /* position: absolute; */
+    position: sticky;
     border-radius: 2px;
 }
