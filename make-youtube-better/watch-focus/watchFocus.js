@@ -31,21 +31,26 @@ function hideThings() {
 document.body.onkeyup = (e) => {
     e.preventDefault();
     if (e.keyCode === 32 || e.keyCode === ' ') {
-        // hideThings();
-        console.log(checkIfFocused());
+        if (!isFocused()) {
+            hideThings();
+        }
     }
 };
 
-const creationBox = document.querySelector('#creation-box');
-const inputContainer = document.querySelector('#labelAndInputContainer');
+function isFocused() {
+    const creationBox = document.getElementById('creation-box');
+    const inputContainer = document.getElementById('labelAndInputContainer');
 
-function checkIfFocused() {
-    if (
-        creationBox.classList.contains('focused') &&
-        inputContainer.classList.contains('focused')
-    ) {
-        return true;
-    } else {
+    try {
+        if (
+            creationBox.classList.contains('focused') &&
+            inputContainer.classList.contains('focused')
+        ) {
+            return true;
+        } else {
+            return false;
+        }
+    } catch (e) {
         return false;
     }
 }
