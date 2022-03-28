@@ -1,4 +1,4 @@
-const toggleDisplay = (dstyle) => {
+function toggleDisplay(dstyle) {
     [
         '#masthead-container',
         '#meta-contents',
@@ -7,9 +7,9 @@ const toggleDisplay = (dstyle) => {
     ].forEach((element) => {
         document.querySelector(element).style.display = dstyle;
     });
-};
+}
 
-const checkHidden = () => {
+function checkHidden() {
     const commentDisplay = document.querySelector('#masthead-container').style
         .display;
     if (commentDisplay === 'none' || commentDisplay === '') {
@@ -17,23 +17,38 @@ const checkHidden = () => {
     } else {
         return false;
     }
-};
+}
 
-const hideThings = () => {
+function hideThings() {
     const hidden = checkHidden();
     if (hidden) {
         toggleDisplay('block');
     } else if (!hidden) {
         toggleDisplay('none');
     }
+}
+
+document.body.onkeyup = (e) => {
+    e.preventDefault();
+    if (e.keyCode === 32 || e.keyCode === ' ') {
+        // hideThings();
+        console.log(checkIfFocused());
+    }
 };
 
-// document.body.onkeyup = (e) => {
-//     e.preventDefault();
-//     if (e.keyCode === 32 || e.keyCode === ' ') {
-//         hideThings();
-//     }
-// };
+const creationBox = document.querySelector('#creation-box');
+const inputContainer = document.querySelector('#labelAndInputContainer');
+
+function checkIfFocused() {
+    if (
+        creationBox.classList.contains('focused') &&
+        inputContainer.classList.contains('focused')
+    ) {
+        return true;
+    } else {
+        return false;
+    }
+}
 
 document.querySelector(
     '#movie_player > div.ytp-chrome-bottom > div.ytp-chrome-controls > div.ytp-left-controls > button'
