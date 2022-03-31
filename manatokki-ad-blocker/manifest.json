@@ -3,10 +3,8 @@
     "description": "Blocking the insane number of ads found on manatokki.",
     "version": "1.0",
     "manifest_version": 3,
-    "content_scripts": [
-        {
-            "matches": ["*://manatoki125.net/*"],
-            "css": ["inject.css"]
-        }
-    ]
+    "background": {
+        "service_worker": "background.js"
+    },
+    "permissions": ["tabs", "webNavigation", "scripting"]
 }
