@@ -3,8 +3,16 @@
     "description": "Blocking the insane number of ads found on manatokki.",
     "version": "1.0",
     "manifest_version": 3,
-    "background": {
-        "service_worker": "background.js"
-    },
-    "permissions": ["tabs", "webNavigation", "scripting"]
+    "content_scripts": [
+        {
+            "matches": [
+                "*://manatoki124.net/*",
+                "*://manatoki125.net/*",
+                "*://manatoki126.net/*",
+                "*://manatoki127.net/*",
+                "*://manatoki128.net/*"
+            ],
+            "css": ["inject.css"]
+        }
+    ]
 }
