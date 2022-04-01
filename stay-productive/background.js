@@ -151,6 +151,13 @@ chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
                                     });
                                 }
                             });
+
+                            if (name === 'linkedin.com') {
+                                chrome.scripting.executeScript({
+                                    target: { tabId: tabId },
+                                    files: ['./linkedin.js'],
+                                });
+                            }
                         } else if (count >= 1) {
                             chrome.tabs.update(tabId, {
                                 url: `./pages/redirect/redirect.html?url=${changeInfo.url}`,

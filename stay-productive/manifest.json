@@ -15,7 +15,13 @@
             "css": ["inject.css"]
         }
     ],
-    "permissions": ["tabs", "webNavigation", "storage", "webRequest"],
+    "permissions": [
+        "tabs",
+        "webNavigation",
+        "storage",
+        "webRequest",
+        "scripting"
+    ],
     "host_permissions": ["*://www.youtube.com/*"],
     "background": {
         "service_worker": "background.js"
