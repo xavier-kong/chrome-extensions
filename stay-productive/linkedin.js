@@ -28,10 +28,11 @@ function hidePosts(posts) {
     });
 }
 
-window.onscroll = (e) => {
+const observer = new MutationObserver(() => {
     const posts = findPosts();
     hidePosts(posts);
-};
+});
 
-const posts = findPosts();
-hidePosts(posts);
+const config = { attributes: true, childList: true, subtree: true };
+
+observer.observe(document, config);
