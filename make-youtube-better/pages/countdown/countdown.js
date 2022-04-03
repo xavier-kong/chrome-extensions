@@ -13,7 +13,7 @@ function getDiff() {
         final.setDate(final.getDate() + 1);
     }
     if (isWeekend()) {
-        final.setHours(16);
+        final.setHours(14);
     } else {
         final.setHours(18);
     }
