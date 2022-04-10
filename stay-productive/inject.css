@@ -3,6 +3,8 @@ html {
 }
 
 .scaffold-layout__aside,
+.global-nav__logo,
+.msg-overlay-list-bubble,
 .scaffold-layout__sidebar {
     display: none !important;
 }
