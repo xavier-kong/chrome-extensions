@@ -1,0 +1,22 @@
+{
+    "name": "GitHub Streak",
+    "description": "To find my github streak!",
+    "version": "1.0",
+    "manifest_version": 3,
+    "content_scripts": [
+        {
+            "matches": ["*://github.com/*"],
+            "js": ["inject.js"],
+            "all_frames": false,
+            "run_at": "document_end"
+        }
+    ],
+    "permissions": [
+        "tabs",
+        "webNavigation",
+        "storage",
+        "webRequest",
+        "scripting"
+    ],
+    "host_permissions": ["https://github-readme-streak-stats.herokuapp.com/*"]
+}
