@@ -4,10 +4,17 @@
 3. if see gap in user streak, update streak start date and longest streak info
 4. display date
 */
-if (checkIfOnProfile()) {
-    const username = getUsername();
-    const startDate = getStartDateIfExists(username);
-    if (startDate) {
+
+async function main() {
+    if (checkIfOnProfile()) {
+        const username = getUsername();
+        const startDate = await getStartDateIfExists(username);
+        if (startDate) {
+            const graphArray = await fetchContributionGraphArray(username);
+        } else {
+            console.log('hjere');
+        }
+
         /*
         get contributions in last year from html
         traverse the graph to find day where commits = 0
@@ -22,16 +29,6 @@ if (checkIfOnProfile()) {
             if today is empty:
                 streak = curr day - start day - 1
         */
-    } else {
-        // get user to enter data do this later
-
-        chrome.storage.local.set({
-            'github-streak': {
-                'xavier-kong': {
-                    startDate: '2021-06-27',
-                },
-            },
-        });
     }
 }
 
@@ -47,23 +44,29 @@ function getUsername() {
 }
 
 function getStartDateIfExists(username) {
-    let startDate = false;
-    chrome.storage.local.get(['github-streak'], (result) => {
-        if (result && 'github-streak' in result) {
-            if (username in result['github-streak']) {
-                startDate = result['github-streak'][username].startDate;
+    return new Promise((resolve, reject) => {
+        chrome.storage.local.get(['github-streak'], function (result) {
+            if (
+                result &&
+                'github-streak' in result &&
+                username in result['github-streak']
+            ) {
+                resolve(result['github-streak'][username].startDate);
+            } else {
+                resolve(false);
             }
-        }
+        });
     });
-    return startDate;
 }
+
+const readLocalStorage = async (key) => {};
 
 function fetchContributionGraphArray(username) {
     const graphJSON = fetch(
         `https://github.com/users/${username}/contributions`
     )
         .then((res) => res.text())
-        .then((graph) => convertGraphToJson(graph))
+        .then((graph) => convertGraphToArray(graph))
         .catch((e) => {
             console.log(e);
             return false;
@@ -95,3 +98,46 @@ function injectStartDateForm(startDateForm) {
     formContainer.innerHTML = startDateForm;
     graph.appendChild(formContainer);
 }
+
+main();
+
+function getStreakHTML(data) {
+    return data
+        .map((item, index) => {
+            return `
+        <div class="contrib-column table-column ${
+            index === 0 ? 'contrib-column-first' : ''
+        }">
+            <span class="text-muted">${item[0]}</span>
+            <span class="contrib-number">${item[1]}</span>
+            <span class="text-muted">${item[2]}</span>
+        </div>
+        `;
+        })
+        .join('\n');
+}
+
+// this information was accurate on the 26th of June 2022
+const data = [
+    [
+        'Contributions in the last year',
+        '1462 total',
+        'Jun 27 2021 - Jun 26 2022',
+    ],
+    ['Longest streak', ' 365 days', 'Jun 27 2021 - Jun 26 2022'],
+    ['Current streak', '365 days', 'Jun 27 2021 - Jun 26 2022'],
+];
+
+function appendStreakStatsHtml(html) {
+    const contributionsCalendar = document.getElementsByClassName(
+        'graph-before-activity-overview'
+    )[0];
+    const container = document.createElement('div');
+    container.innerHTML = html;
+    container.classList.add('original-streak');
+    if (!document.querySelector('.original-streak')) {
+        contributionsCalendar.appendChild(container);
+    }
+}
+
+function getTotalContributions() {}
