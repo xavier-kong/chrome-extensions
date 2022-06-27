@@ -140,4 +140,21 @@ function appendStreakStatsHtml(html) {
     }
 }
 
-function getTotalContributions() {}
+function getTotalContributions() {
+    const nodes = document.getElementsByClassName('f4 text-normal mb-2');
+    for (i in nodes) {
+        if (
+            nodes[i].innerHTML &&
+            nodes[i].innerHTML.includes('contributions')
+        ) {
+            const number = [];
+            for (const k of nodes[i].innerHTML) {
+                if (!isNaN(k) && k != '\n' && k != ' ') {
+                    number.push(k);
+                }
+            }
+            const contributionsString = parseInt(number.join(''));
+            return contributionsString;
+        }
+    }
+}

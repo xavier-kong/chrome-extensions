@@ -1,0 +1,36 @@
+.contrib-column {
+    text-align: center;
+    font-size: 11px;
+    padding: 15px 0px;
+}
+.contrib-column-first {
+    border-left: 0px;
+}
+.table-column {
+    display: table-cell;
+    width: 1%;
+    padding-right: 10px;
+    padding-left: 10px;
+    vertical-align: top;
+}
+.text-muted {
+    color: var(--color-text-secondary);
+}
+.contrib-number {
+    font-weight: 300;
+    line-height: 1.3em;
+    font-size: 24px;
+    display: block;
+    color: var(--color-text-primary);
+}
+.text-muted {
+    color: var(--color-text-secondary);
+}
+.glowing {
+    outline: none;
+    border-color: #c29eed;
+    box-shadow: 0 0 10px #bfbfff;
+}
+.mb-5.border.border-gray-dark.rounded-1.py-3 {
+    padding-bottom: 0px !important;
+}
