@@ -10,28 +10,28 @@ async function main() {
         const username = getUsername();
         const startDate = await getStartDateIfExists(username);
         if (startDate) {
+            const todayDateString = buildTodayDateString();
+            let currentStreak = calculateNewStreak(todayDateString, startDate);
+            let longestStreak;
+            let newStartDate;
             const graphArray = await fetchContributionGraphArray(username);
             const lastZeroContribution =
                 findMostRecentZeroContribution(graphArray);
             if (lastZeroContribution) {
-                const lastZeroContributionIsToday =
-                    checkIfLastZeroContributionIsToday(lastZeroContribution);
-                if (lastZeroContributionIsToday) {
-                    // if today is empty:
-                    // streak = curr day - start day - 1
+                if (lastZeroContribution === todayDateString) {
+                    currentStreak -= 1;
                 } else {
-                    //  if earlier than today:
+                    newStartDate = lastZeroContribution;
+                    longestStreak = currentStreak;
                     // update start day
                     // update longest streak
-                    // streak = curr day - start day
                 }
             } else {
                 // if none found:
-                // streak = curr day - start day
                 // update longest streak
             }
         } else {
-            console.log('hjere');
+            // no start date found
         }
     }
 }
@@ -174,13 +174,29 @@ function findMostRecentZeroContribution(contributionArray) {
     return lastZeroContribution;
 }
 
-function checkIfLastZeroContributionIsToday(lastZeroContribution) {
+function buildTodayDateString() {
     const date = new Date();
-    const currentYear = date.getFullYear();
-    const currentMonth = date.getMonth() + 1;
     const currentMonthString =
-        currentMonth > 10 ? currentMonth : `0${currentMonth}`;
-    const currentDay = date.getDate();
-    const todayDateString = `${currentYear}-${currentMonthString}-${currentDay}`;
-    return lastZeroContribution === todayDateString;
+        date.getMonth() > 9 ? date.getMonth() + 1 : `0${date.getMonth() + 1}`;
+    const currentDateSting =
+        date.getDate() > 9 ? date.getDate() : `0${date.getDate()}`;
+    const todayDateString = `${date.getFullYear()}-${currentMonthString}-${currentDateSting}`;
+    return todayDateString;
+}
+
+function calculateNewStreak(endDate, startDate) {
+    endDate = createDateFromDateString(endDate);
+    startDate = createDateFromDateString(startDate);
+
+    const oneDay = 24 * 60 * 60 * 1000;
+    const newStreak = Math.round(Math.abs((endDate - startDate) / oneDay));
+    return newStreak;
+}
+
+function createDateFromDateString(dateString) {
+    const regexTest = /(?<year>\d{4})-(?<month>\d{2})-(?<day>\d{2})/;
+    const match = regexTest.exec(dateString);
+    const { year, month, day } = match.groups;
+    const date = new Date(year, month, day);
+    return date;
 }
