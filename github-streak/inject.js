@@ -11,24 +11,28 @@ async function main() {
         const startDate = await getStartDateIfExists(username);
         if (startDate) {
             const graphArray = await fetchContributionGraphArray(username);
+            const lastZeroContribution =
+                findMostRecentZeroContribution(graphArray);
+            if (lastZeroContribution) {
+                const lastZeroContributionIsToday =
+                    checkIfLastZeroContributionIsToday(lastZeroContribution);
+                if (lastZeroContributionIsToday) {
+                    // if today is empty:
+                    // streak = curr day - start day - 1
+                } else {
+                    //  if earlier than today:
+                    // update start day
+                    // update longest streak
+                    // streak = curr day - start day
+                }
+            } else {
+                // if none found:
+                // streak = curr day - start day
+                // update longest streak
+            }
         } else {
             console.log('hjere');
         }
-
-        /*
-        get contributions in last year from html
-        traverse the graph to find day where commits = 0
-        if find most recent empty day:
-            if none found:
-                streak = curr day - start day
-                update longest streak
-            if earlier than today:
-                update start day
-                update longest streak
-                streak = curr day - start day
-            if today is empty:
-                streak = curr day - start day - 1
-        */
     }
 }
 
@@ -157,4 +161,26 @@ function getTotalContributions() {
             return contributionsString;
         }
     }
+}
+
+function findMostRecentZeroContribution(contributionArray) {
+    let lastZeroContribution;
+    for (const day of contributionArray) {
+        if (day.count === 0) {
+            lastZeroContribution = day.date;
+        }
+    }
+
+    return lastZeroContribution;
+}
+
+function checkIfLastZeroContributionIsToday(lastZeroContribution) {
+    const date = new Date();
+    const currentYear = date.getFullYear();
+    const currentMonth = date.getMonth() + 1;
+    const currentMonthString =
+        currentMonth > 10 ? currentMonth : `0${currentMonth}`;
+    const currentDay = date.getDate();
+    const todayDateString = `${currentYear}-${currentMonthString}-${currentDay}`;
+    return lastZeroContribution === todayDateString;
 }
