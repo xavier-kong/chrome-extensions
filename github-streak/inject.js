@@ -8,27 +8,29 @@
 async function main() {
     if (checkIfOnProfile()) {
         const username = getUsername();
-        const startDate = await getStartDateIfExists(username);
+        const { startDate, longestStreak, currentStreak } = await getData(
+            username
+        );
         if (startDate) {
             const todayDateString = buildTodayDateString();
-            let currentStreak = calculateNewStreak(todayDateString, startDate);
-            let longestStreak;
-            let newStartDate;
+            let newStreak = calculateNewStreak(todayDateString, startDate);
+            let newLongestStreak;
+            let newStartDate = startDate;
             const graphArray = await fetchContributionGraphArray(username);
             const lastZeroContribution =
                 findMostRecentZeroContribution(graphArray);
             if (lastZeroContribution) {
                 if (lastZeroContribution === todayDateString) {
-                    currentStreak -= 1;
+                    newStreak -= 1;
                 } else {
                     newStartDate = lastZeroContribution;
-                    longestStreak = currentStreak;
-                    // update start day
-                    // update longest streak
+                    newLongestStreak = newStreak;
                 }
             } else {
-                // if none found:
-                // update longest streak
+                newLongestStreak = currentStreak;
+
+                // build and insert html
+                // update new data
             }
         } else {
             // no start date found
@@ -47,7 +49,7 @@ function getUsername() {
     return username;
 }
 
-function getStartDateIfExists(username) {
+function getData(username) {
     return new Promise((resolve, reject) => {
         chrome.storage.local.get(['github-streak'], function (result) {
             if (
@@ -55,7 +57,7 @@ function getStartDateIfExists(username) {
                 'github-streak' in result &&
                 username in result['github-streak']
             ) {
-                resolve(result['github-streak'][username].startDate);
+                resolve(result['github-streak'][username]);
             } else {
                 resolve(false);
             }
