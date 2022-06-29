@@ -202,3 +202,22 @@ function createDateFromDateString(dateString) {
     const date = new Date(year, month, day);
     return date;
 }
+
+async function updateDate({
+    data,
+    username,
+    longestStreak,
+    currentStreak,
+    startDate,
+}) {
+    await chrome.storage.local.set({
+        'github-streak': {
+            ...data,
+            [username]: {
+                longestStreak,
+                currentStreak,
+                startDate,
+            },
+        },
+    });
+}
