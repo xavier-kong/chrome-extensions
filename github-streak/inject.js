@@ -107,33 +107,6 @@ function injectStartDateForm(startDateForm) {
 
 main();
 
-function getStreakHTML(data) {
-    return data
-        .map((item, index) => {
-            return `
-        <div class="contrib-column table-column ${
-            index === 0 ? 'contrib-column-first' : ''
-        }">
-            <span class="text-muted">${item[0]}</span>
-            <span class="contrib-number">${item[1]}</span>
-            <span class="text-muted">${item[2]}</span>
-        </div>
-        `;
-        })
-        .join('\n');
-}
-
-// this information was accurate on the 26th of June 2022
-const data = [
-    [
-        'Contributions in the last year',
-        '1462 total',
-        'Jun 27 2021 - Jun 26 2022',
-    ],
-    ['Longest streak', ' 365 days', 'Jun 27 2021 - Jun 26 2022'],
-    ['Current streak', '365 days', 'Jun 27 2021 - Jun 26 2022'],
-];
-
 function appendStreakStatsHtml(html) {
     const contributionsCalendar = document.getElementsByClassName(
         'graph-before-activity-overview'
@@ -222,16 +195,45 @@ async function updateDate({
     });
 }
 
-function buildHtml({ startDate, longestStreak, currentStreak, totalContributions }) {
+function buildHtml({
+    startDate,
+    longestStreak,
+    currentStreak,
+    totalContributions,
+}) {}
+
+function createHtmlData({ startDate, longestStreak, currentStreak }) {
     const data = [
         [
             'Contributions in the last year',
-            '1462 total',
-            'Jun 27 2021 - Jun 26 2022',
+            `${totalContributions}`,
+            `${graphStartDate} - ${graphEndDate}`,
         ],
-        ['Longest streak', ' 365 days', 'Jun 27 2021 - Jun 26 2022'],
-        ['Current streak', '365 days', 'Jun 27 2021 - Jun 26 2022'],
+        [
+            'Longest streak',
+            `${longestStreak.length}`,
+            `${longestStreak.startDay} - ${longestStreak.endDay}`,
+        ],
+        [
+            'Current streak',
+            `${currentStreak}`,
+            `${startDate} - ${latestCommitDay}`,
+        ],
     ];
 }
 
-function createHtmlData({ startDate, longestStreak, currentStreak }) {}
+function getStreakHTML(data) {
+    return data
+        .map((item, index) => {
+            return `
+        <div class="contrib-column table-column ${
+            index === 0 ? 'contrib-column-first' : ''
+        }">
+            <span class="text-muted">${item[0]}</span>
+            <span class="contrib-number">${item[1]}</span>
+            <span class="text-muted">${item[2]}</span>
+        </div>
+        `;
+        })
+        .join('\n');
+}
