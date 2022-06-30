@@ -221,3 +221,17 @@ async function updateDate({
         },
     });
 }
+
+function buildHtml({ startDate, longestStreak, currentStreak, totalContributions }) {
+    const data = [
+        [
+            'Contributions in the last year',
+            '1462 total',
+            'Jun 27 2021 - Jun 26 2022',
+        ],
+        ['Longest streak', ' 365 days', 'Jun 27 2021 - Jun 26 2022'],
+        ['Current streak', '365 days', 'Jun 27 2021 - Jun 26 2022'],
+    ];
+}
+
+function createHtmlData({ startDate, longestStreak, currentStreak }) {}
