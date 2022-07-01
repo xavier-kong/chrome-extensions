@@ -196,18 +196,35 @@ async function updateDate({
 }
 
 function buildHtml({
-    startDate,
+    latestCommitDay,
     longestStreak,
     currentStreak,
     totalContributions,
-}) {}
+    graph,
+}) {
+    const htmlData = createHtmlData({
+        latestCommitDay,
+        longestStreak,
+        currentStreak,
+        totalContributions,
+        graph,
+    });
+    const streakHtml = getStreakHTML(htmlData);
+    return streakHtml;
+}
 
-function createHtmlData({ startDate, longestStreak, currentStreak }) {
+function createHtmlData({
+    latestCommitDay,
+    longestStreak,
+    currentStreak,
+    totalContributions,
+    graph,
+}) {
     const data = [
         [
             'Contributions in the last year',
             `${totalContributions}`,
-            `${graphStartDate} - ${graphEndDate}`,
+            `${graph.startDate} - ${graph.endDate}`,
         ],
         [
             'Longest streak',
@@ -216,10 +233,11 @@ function createHtmlData({ startDate, longestStreak, currentStreak }) {
         ],
         [
             'Current streak',
-            `${currentStreak}`,
-            `${startDate} - ${latestCommitDay}`,
+            `${currentStreak.length}`,
+            `${currentStreak.startDate} - ${latestCommitDay}`,
         ],
     ];
+    return data;
 }
 
 function getStreakHTML(data) {
