@@ -8,10 +8,8 @@
 async function main() {
     if (checkIfOnProfile()) {
         const username = getUsername();
-        const { startDate, longestStreak, currentStreak } = await getData(
-            username
-        );
-        if (startDate) {
+        const { longestStreak, currentStreak } = await getData(username);
+        if (currentStreak) {
             const todayDateString = buildTodayDateString();
             let newStreak = calculateNewStreak(todayDateString, startDate);
             let newLongestStreak;
@@ -105,8 +103,6 @@ function injectStartDateForm(startDateForm) {
     graph.appendChild(formContainer);
 }
 
-main();
-
 function appendStreakStatsHtml(html) {
     const contributionsCalendar = document.getElementsByClassName(
         'graph-before-activity-overview'
@@ -176,20 +172,13 @@ function createDateFromDateString(dateString) {
     return date;
 }
 
-async function updateDate({
-    data,
-    username,
-    longestStreak,
-    currentStreak,
-    startDate,
-}) {
+async function updateDate({ data, username, longestStreak, currentStreak }) {
     await chrome.storage.local.set({
         'github-streak': {
             ...data,
             [username]: {
                 longestStreak,
                 currentStreak,
-                startDate,
             },
         },
     });
@@ -255,3 +244,5 @@ function getStreakHTML(data) {
         })
         .join('\n');
 }
+
+main();
