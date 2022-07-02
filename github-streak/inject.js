@@ -6,32 +6,23 @@
 */
 
 async function main() {
-    if (checkIfOnProfile()) {
+    const onProfile = checkIfOnProfile();
+    if (onProfile) {
         const username = getUsername();
         const { longestStreak, currentStreak } = await getData(username);
         if (currentStreak) {
-            const todayDateString = buildTodayDateString();
-            let newStreak = calculateNewStreak(todayDateString, startDate);
-            let newLongestStreak;
-            let newStartDate = startDate;
-            const graphArray = await fetchContributionGraphArray(username);
-            const lastZeroContribution =
-                findMostRecentZeroContribution(graphArray);
-            if (lastZeroContribution) {
-                if (lastZeroContribution === todayDateString) {
-                    newStreak -= 1;
-                } else {
-                    newStartDate = lastZeroContribution;
-                    newLongestStreak = newStreak;
-                }
-            } else {
-                newLongestStreak = currentStreak;
-
-                // build and insert html
-                // update new data
-            }
+            /*
+            fetch real time
+                total contributions
+                graph start and end data
+            
+            fetch 
+                longestStreak:
+                    length
+                    
+            */
         } else {
-            // no start date found
+            // add form and ask user to enter data
         }
     }
 }
@@ -246,3 +237,34 @@ function getStreakHTML(data) {
 }
 
 main();
+
+// async function main() {
+//     if (checkIfOnProfile()) {
+//         const username = getUsername();
+//         const { longestStreak, currentStreak } = await getData(username);
+//         if (currentStreak) {
+//             const todayDateString = buildTodayDateString();
+//             let newStreak = calculateNewStreak(todayDateString, startDate);
+//             let newLongestStreak;
+//             let newStartDate = startDate;
+//             const graphArray = await fetchContributionGraphArray(username);
+//             const lastZeroContribution =
+//                 findMostRecentZeroContribution(graphArray);
+//             if (lastZeroContribution) {
+//                 if (lastZeroContribution === todayDateString) {
+//                     newStreak -= 1;
+//                 } else {
+//                     newStartDate = lastZeroContribution;
+//                     newLongestStreak = newStreak;
+//                 }
+//             } else {
+//                 newLongestStreak = currentStreak;
+
+//                 // build and insert html
+//                 // update new data
+//             }
+//         } else {
+//             // no start date found
+//         }
+//     }
+// }
