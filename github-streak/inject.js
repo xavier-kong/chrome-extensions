@@ -11,15 +11,26 @@ async function main() {
         const username = getUsername();
         const { longestStreak, currentStreak } = await getData(username);
         if (currentStreak) {
+            const graphArray = await fetchContributionGraphArray(username);
+            const { lastZeroContribution, graphStart, graphEnd } =
+                getTotalContributions(graphArray);
+            if (lastZeroContribution) {
+            }
+
             /*
             fetch real time
                 total contributions
                 graph start and end data
-            
-            fetch 
+                latestCommitDay
+
+            fetch
                 longestStreak:
                     length
-                    
+                    startDay
+                    endDay
+                currentStreak
+                    length
+                    startDate
             */
         } else {
             // add form and ask user to enter data
@@ -133,7 +144,11 @@ function findMostRecentZeroContribution(contributionArray) {
         }
     }
 
-    return lastZeroContribution;
+    return {
+        lastZeroContribution,
+        graphStart: contributionArray[0].date,
+        graphEnd: contributionArray[contributionArray.length - 1].date,
+    };
 }
 
 function buildTodayDateString() {
