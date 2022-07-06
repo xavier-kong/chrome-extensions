@@ -17,7 +17,27 @@ async function main() {
             const todayDateString = buildTodayDateString();
             if (lastZeroContribution) {
                 if (lastZeroContribution === todayDateString) {
-                    
+                    /*
+                    case 1: last zero does not exist
+                        currentStreak.length = today - startdate
+                        if length > longestStreak.length:
+                            update all longestStreak paranms
+
+                    case 2: last zero was today
+                        currentStreak.length = yesterday - startdate
+                        if length > longestStreak.length:
+                            update all longestStreak paranms
+
+                    case 3: last zero was before today
+                        update current streak start day
+                        currentStreak.length = today - startdate
+                        if length > longestStreak.length:
+                            update all longestStreak paranms
+
+                    pattern:
+                        in all cases, the streak is pretty much today - startDate
+                        and if longer than longest streak update all params
+                    */
                 }
             }
 
