@@ -14,7 +14,11 @@ async function main() {
             const graphArray = await fetchContributionGraphArray(username);
             const { lastZeroContribution, graphStart, graphEnd } =
                 getTotalContributions(graphArray);
+            const todayDateString = buildTodayDateString();
             if (lastZeroContribution) {
+                if (lastZeroContribution === todayDateString) {
+                    
+                }
             }
 
             /*
