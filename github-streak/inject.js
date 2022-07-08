@@ -16,7 +16,7 @@ async function main() {
                 getTotalContributions(graphArray);
             const todayDateString = buildDateString(0);
             let currentStreakStartDate = currentStreak.startDate;
-            let currentStreakEndDate = todayDateString
+            let currentStreakEndDate = todayDateString;
             if (lastZeroContribution) {
                 if (lastZeroContribution === todayDateString) {
                     // change end date to ytd
@@ -182,13 +182,13 @@ function findMostRecentZeroContribution(contributionArray) {
 }
 
 function buildDateString(days) {
-    const date = new Date();
-    const currentMonthString =
+    const date = new Date(new Date().setDate(new Date().getDate() - days));
+    const monthString =
         date.getMonth() > 9 ? date.getMonth() + 1 : `0${date.getMonth() + 1}`;
-    const currentDateSting =
+    const dateSting =
         date.getDate() > 9 ? date.getDate() : `0${date.getDate()}`;
-    const todayDateString = `${date.getFullYear()}-${currentMonthString}-${currentDateSting}`;
-    return todayDateString;
+    const fullDateString = `${date.getFullYear()}-${currentMonthString}-${currentDateSting}`;
+    return fullDateString;
 }
 
 function calculateNewStreak(endDate, startDate) {
