@@ -20,27 +20,33 @@ async function main() {
             if (lastZeroContribution) {
                 if (lastZeroContribution === todayDateString) {
                     // change end date to ytd
+                    currentStreakEndDate = buildDateString(1);
+                } else {
+                    currentStreakStartDate = todayDateString;
                 }
             }
 
-            // change buildDateString to can make string based on days before tdaoy
+            const currentStreakLength = calculateStreakLength(
+                currentStreakStartDate,
+                currentStreakEndDate
+            );
+
+            if (currentStreakLength > longestStreak.length) {
+                longestStreak = {
+                    startDay: currentStreakStartDate,
+                    endDay: currentStreakEndDate,
+                    length: currentStreakLength,
+                };
+            }
+
+            // update data to local storage
+
+            const streakHtml = buildHtml({
+                // latestCommitDay: 
+            })
 
             /*
-            case 1: last zero does not exist
-                currentStreak.length = today - startdate
-                if length > longestStreak.length:
-                    update all longestStreak paranms
 
-            case 2: last zero was today
-                currentStreak.length = yesterday - startdate
-                if length > longestStreak.length:
-                    update all longestStreak paranms
-
-            case 3: last zero was before today
-                update current streak start day
-                currentStreak.length = today - startdate
-                if length > longestStreak.length:
-                    update all longestStreak paranms
 
             pattern:
                 in all cases, the streak is pretty much today - startDate
@@ -187,11 +193,11 @@ function buildDateString(days) {
         date.getMonth() > 9 ? date.getMonth() + 1 : `0${date.getMonth() + 1}`;
     const dateSting =
         date.getDate() > 9 ? date.getDate() : `0${date.getDate()}`;
-    const fullDateString = `${date.getFullYear()}-${currentMonthString}-${currentDateSting}`;
+    const fullDateString = `${date.getFullYear()}-${monthString}-${dateSting}`;
     return fullDateString;
 }
 
-function calculateNewStreak(endDate, startDate) {
+function calculateStreakLength(endDate, startDate) {
     endDate = createDateFromDateString(endDate);
     startDate = createDateFromDateString(startDate);
 
