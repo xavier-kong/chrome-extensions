@@ -39,11 +39,18 @@ async function main() {
                 };
             }
 
-            // update data to local storage
+            await updateData({
+                username,
+                longestStreak,
+                currentStreak: {
+                    length: currentStreakLength,
+                    startDate: currentStreakStartDate,
+                },
+            });
 
             const streakHtml = buildHtml({
-                // latestCommitDay: 
-            })
+                // latestCommitDay:
+            });
 
             /*
 
@@ -214,15 +221,18 @@ function createDateFromDateString(dateString) {
     return date;
 }
 
-async function updateDate({ data, username, longestStreak, currentStreak }) {
-    await chrome.storage.local.set({
-        'github-streak': {
-            ...data,
-            [username]: {
-                longestStreak,
-                currentStreak,
+async function updateData({ username, longestStreak, currentStreak }) {
+    chrome.storage.local.get(['github-streak'], async (res) => {
+        const data = res['github-streak'];
+        await chrome.storage.local.set({
+            'github-streak': {
+                ...data,
+                [username]: {
+                    longestStreak,
+                    currentStreak,
+                },
             },
-        },
+        });
     });
 }
 
