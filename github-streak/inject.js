@@ -66,6 +66,8 @@ async function main() {
                 },
             });
 
+            appendStreakStatsHtml(streakHtml);
+
             /*
 
 
