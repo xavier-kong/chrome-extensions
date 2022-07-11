@@ -12,8 +12,12 @@ async function main() {
         const { longestStreak, currentStreak } = await getData(username);
         if (currentStreak) {
             const graphArray = await fetchContributionGraphArray(username);
-            const { lastZeroContribution, graphStart, graphEnd } =
-                getTotalContributions(graphArray);
+            const {
+                lastZeroContribution,
+                latestCommitDay,
+                graphStart,
+                graphEnd,
+            } = getTotalContributions(graphArray);
             const todayDateString = buildDateString(0);
             let currentStreakStartDate = currentStreak.startDate;
             let currentStreakEndDate = todayDateString;
@@ -49,7 +53,17 @@ async function main() {
             });
 
             const streakHtml = buildHtml({
-                // latestCommitDay:
+                latestCommitDay,
+                longestStreak,
+                currentStreak: {
+                    length: currentStreakLength,
+                    startDate: currentStreakStartDate,
+                },
+                totalContributions,
+                graph: {
+                    startDate: graphStart,
+                    endDate: graphEnd,
+                },
             });
 
             /*
@@ -181,14 +195,18 @@ function getTotalContributions() {
 
 function findMostRecentZeroContribution(contributionArray) {
     let lastZeroContribution;
+    let lastestCommitDay;
     for (const day of contributionArray) {
         if (day.count === 0) {
             lastZeroContribution = day.date;
+        } else {
+            lastestCommitDay = day.date;
         }
     }
 
     return {
         lastZeroContribution,
+        lastestCommitDay,
         graphStart: contributionArray[0].date,
         graphEnd: contributionArray[contributionArray.length - 1].date,
     };
