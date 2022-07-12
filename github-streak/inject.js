@@ -1,10 +1,3 @@
-/*
-1. if no start date in storage, ask user to add streak start date
-2. find latest contribution and create contribution in last year, curr streak and longest streak
-3. if see gap in user streak, update streak start date and longest streak info
-4. display date
-*/
-
 async function main() {
     const onProfile = checkIfOnProfile();
     if (onProfile) {
@@ -67,31 +60,9 @@ async function main() {
             });
 
             appendStreakStatsHtml(streakHtml);
-
-            /*
-
-
-            pattern:
-                in all cases, the streak is pretty much today - startDate
-                and if longer than longest streak update all params
-            */
-
-            /*
-            fetch real time
-                total contributions
-                graph start and end data
-                latestCommitDay
-
-            fetch
-                longestStreak:
-                    length
-                    startDay
-                    endDay
-                currentStreak
-                    length
-                    startDate
-            */
         } else {
+            `
+            `;
             // add form and ask user to enter data
         }
     }
@@ -318,34 +289,3 @@ function getStreakHTML(data) {
 }
 
 main();
-
-// async function main() {
-//     if (checkIfOnProfile()) {
-//         const username = getUsername();
-//         const { longestStreak, currentStreak } = await getData(username);
-//         if (currentStreak) {
-//             const todayDateString = buildTodayDateString();
-//             let newStreak = calculateNewStreak(todayDateString, startDate);
-//             let newLongestStreak;
-//             let newStartDate = startDate;
-//             const graphArray = await fetchContributionGraphArray(username);
-//             const lastZeroContribution =
-//                 findMostRecentZeroContribution(graphArray);
-//             if (lastZeroContribution) {
-//                 if (lastZeroContribution === todayDateString) {
-//                     newStreak -= 1;
-//                 } else {
-//                     newStartDate = lastZeroContribution;
-//                     newLongestStreak = newStreak;
-//                 }
-//             } else {
-//                 newLongestStreak = currentStreak;
-
-//                 // build and insert html
-//                 // update new data
-//             }
-//         } else {
-//             // no start date found
-//         }
-//     }
-// }
