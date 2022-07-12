@@ -63,6 +63,11 @@ async function main() {
         } else {
             `
             `;
+            /*
+            create form
+            attach event listener to form
+            append form
+            */
             // add form and ask user to enter data
         }
     }
@@ -123,7 +128,23 @@ function convertGraphToArray(graph) {
     return data;
 }
 
-function createStartDateForm() {}
+function createStartDateForm() {
+    return `
+        <form>
+            <label for="currentStreakStartDate">
+                Current Streak Start Date:
+            </label>
+            <br />
+            <input
+                type="date"
+                id="currentStreakStartDate"
+                name="currentStreakStartDate"
+            />
+            <br />
+            <input type="submit" value="Submit" />
+        </form>
+    `;
+}
 
 function injectStartDateForm(startDateForm) {
     const graph = document.getElementsByClassName(
