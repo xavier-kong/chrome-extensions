@@ -61,8 +61,8 @@ async function main() {
 
             appendStreakStatsHtml(streakHtml);
         } else {
-            `
-            `;
+            const startDateForm = createStartDateForm(username);
+            injectStartDateForm(startDateForm);
             /*
             create form
             attach event listener to form
@@ -128,21 +128,23 @@ function convertGraphToArray(graph) {
     return data;
 }
 
-function createStartDateForm() {
+function createStartDateForm(username) {
     return `
-        <form>
-            <label for="currentStreakStartDate">
-                Current Streak Start Date:
-            </label>
-            <br />
-            <input
-                type="date"
-                id="currentStreakStartDate"
-                name="currentStreakStartDate"
-            />
-            <br />
-            <input type="submit" value="Submit" />
-        </form>
+        <div class="startDateForm" >
+            <form>
+                <label for="currentStreakStartDate">
+                    Please Current Streak Start Date for ${username}:
+                </label>
+                <br />
+                <input
+                    type="date"
+                    id="currentStreakStartDate"
+                    name="currentStreakStartDate"
+                />
+                <br />
+                <input type="submit" value="Submit" />
+            </form>
+        </div>
     `;
 }
 
