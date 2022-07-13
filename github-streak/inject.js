@@ -130,10 +130,10 @@ function convertGraphToArray(graph) {
 
 function createStartDateForm(username) {
     return `
-        <div class="startDateForm" >
-            <form>
+        <div class="startDateFormContainer" >
+            <form id="startDateForm">
                 <label for="currentStreakStartDate">
-                    Please Current Streak Start Date for ${username}:
+                    Please Enter Current Streak Start Date for ${username}:
                 </label>
                 <br />
                 <input
@@ -147,6 +147,8 @@ function createStartDateForm(username) {
         </div>
     `;
 }
+
+function onStartDateFormSubmit(event) {}
 
 function injectStartDateForm(startDateForm) {
     const graph = document.getElementsByClassName(
