@@ -148,7 +148,9 @@ function createStartDateForm(username) {
     `;
 }
 
-function onStartDateFormSubmit(event) {}
+function onStartDateFormSubmit(event) {
+    console.log(document.getElementById('currentStreakStartDate').value);
+}
 
 function injectStartDateForm(startDateForm) {
     const graph = document.getElementsByClassName(
@@ -158,6 +160,9 @@ function injectStartDateForm(startDateForm) {
     formContainer.classList.add('start-date-form');
     formContainer.innerHTML = startDateForm;
     graph.appendChild(formContainer);
+
+    const form = document.getElementById('startDateForm');
+    form.addEventListener('submit', onStartDateFormSubmit);
 }
 
 function appendStreakStatsHtml(html) {
