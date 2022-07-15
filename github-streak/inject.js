@@ -142,7 +142,7 @@ function createStartDateForm(username) {
                     name="currentStreakStartDate"
                 />
                 <br />
-                <button type="button" class="startDateFormSubmitButton">Submit</button>
+                <button type="button" id="startDateFormSubmitButton">Submit</button>
             </form>
         </div>
     `;
@@ -167,7 +167,7 @@ function injectStartDateForm(startDateForm) {
     formContainer.innerHTML = startDateForm;
     graph.appendChild(formContainer);
 
-    const button = document.getElementsByClassName('startDateFormSubmitButton');
+    const button = document.getElementById('startDateFormSubmitButton');
     button.addEventListener('click', onStartDateFormClick);
 }
 
