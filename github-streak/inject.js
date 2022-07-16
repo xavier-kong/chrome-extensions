@@ -148,14 +148,20 @@ function createStartDateForm(username) {
     `;
 }
 
-function onStartDateFormClick(event) {
+async function onStartDateFormClick(event) {
     event.preventDefault();
     const username = getUsername();
     const currentStreakStartDate = document.getElementById(
         'currentStreakStartDate'
     ).value;
-    console.log(username, currentStreakStartDate);
-    // change from on submit to onclick!
+    const currentStreak = {
+        startDate: currentStreakStartDate,
+    };
+    await updateData({
+        username: username,
+        currentStreak,
+        currentStreak,
+    });
 }
 
 function injectStartDateForm(startDateForm) {
