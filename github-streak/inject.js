@@ -14,6 +14,11 @@ async function main() {
             const todayDateString = buildDateString(0);
             let currentStreakStartDate = currentStreak.startDate;
             let currentStreakEndDate = todayDateString;
+            longestStreak = longestStreak
+                ? longestStreak
+                : {
+                      length: 0,
+                  };
             if (lastZeroContribution) {
                 if (lastZeroContribution === todayDateString) {
                     // change end date to ytd
@@ -63,12 +68,6 @@ async function main() {
         } else {
             const startDateForm = createStartDateForm(username);
             injectStartDateForm(startDateForm);
-            /*
-            create form
-            attach event listener to form
-            append form
-            */
-            // add form and ask user to enter data
         }
     }
 }
