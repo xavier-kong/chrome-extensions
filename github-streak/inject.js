@@ -11,7 +11,7 @@ async function main() {
                 latestCommitDay,
                 graphStart,
                 graphEnd,
-            } = getTotalContributions(graphArray);
+            } = findMostRecentZeroContribution(graphArray);
             const todayDateString = buildDateString(0);
             let currentStreakStartDate = currentStreak.startDate;
             let currentStreakEndDate = todayDateString;
@@ -49,7 +49,7 @@ async function main() {
 
             const streakHtml = buildHtml({
                 latestCommitDay,
-                currentLongestStreak,
+                longestStreak: currentLongestStreak,
                 currentStreak: {
                     length: currentStreakLength,
                     startDate: currentStreakStartDate,
@@ -296,12 +296,12 @@ function createHtmlData({
         ],
         [
             'Longest streak',
-            `${longestStreak.length}`,
+            `${longestStreak.length} ${longestStreak.length === 1 ? 'day' : 'days'}`,
             `${longestStreak.startDay} - ${longestStreak.endDay}`,
         ],
         [
             'Current streak',
-            `${currentStreak.length}`,
+            `${currentStreak.length} ${currentStreak.length === 1 ? 'day' : 'days'}`,
             `${currentStreak.startDate} - ${latestCommitDay}`,
         ],
     ];
