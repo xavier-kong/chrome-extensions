@@ -5,6 +5,7 @@ async function main() {
         const { longestStreak, currentStreak } = await getData(username);
         if (currentStreak) {
             const graphArray = await fetchContributionGraphArray(username);
+            const totalContributions = getTotalContributions();
             const {
                 lastZeroContribution,
                 latestCommitDay,
@@ -14,11 +15,7 @@ async function main() {
             const todayDateString = buildDateString(0);
             let currentStreakStartDate = currentStreak.startDate;
             let currentStreakEndDate = todayDateString;
-            longestStreak = longestStreak
-                ? longestStreak
-                : {
-                      length: 0,
-                  };
+            let currentLongestStreak = longestStreak ? longestStreak : { length: 0 };
             if (lastZeroContribution) {
                 if (lastZeroContribution === todayDateString) {
                     // change end date to ytd
@@ -33,8 +30,8 @@ async function main() {
                 currentStreakEndDate
             );
 
-            if (currentStreakLength > longestStreak.length) {
-                longestStreak = {
+            if (currentStreakLength > currentLongestStreak.length) {
+                currentLongestStreak = {
                     startDay: currentStreakStartDate,
                     endDay: currentStreakEndDate,
                     length: currentStreakLength,
@@ -43,7 +40,7 @@ async function main() {
 
             await updateData({
                 username,
-                longestStreak,
+                currentLongestStreak,
                 currentStreak: {
                     length: currentStreakLength,
                     startDate: currentStreakStartDate,
@@ -52,7 +49,7 @@ async function main() {
 
             const streakHtml = buildHtml({
                 latestCommitDay,
-                longestStreak,
+                currentLongestStreak,
                 currentStreak: {
                     length: currentStreakLength,
                     startDate: currentStreakStartDate,
@@ -139,8 +136,6 @@ function createStartDateForm(username) {
                     type="date"
                     id="currentStreakStartDate"
                     name="currentStreakStartDate"
-                />
-                <br />
                 <button type="button" id="startDateFormSubmitButton">Submit</button>
             </form>
         </div>
