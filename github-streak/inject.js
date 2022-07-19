@@ -204,18 +204,18 @@ function getTotalContributions() {
 
 function findMostRecentZeroContribution(contributionArray) {
     let lastZeroContribution;
-    let lastestCommitDay;
+    let latestCommitDay;
     for (const day of contributionArray) {
         if (day.count === 0) {
             lastZeroContribution = day.date;
         } else {
-            lastestCommitDay = day.date;
+            latestCommitDay = day.date;
         }
     }
 
     return {
         lastZeroContribution,
-        lastestCommitDay,
+        latestCommitDay,
         graphStart: contributionArray[0].date,
         graphEnd: contributionArray[contributionArray.length - 1].date,
     };
