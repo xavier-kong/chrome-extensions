@@ -1,3 +1,5 @@
+// refactor everything!
+// handle total contributions issue when on overview
 async function main() {
     const onProfile = checkIfOnProfile();
     if (onProfile) {
@@ -76,7 +78,14 @@ function checkIfOnProfile() {
 
 function getUsername() {
     const url = window.location.href;
-    const username = url.replace('https://github.com/', '');
+    let username;
+    if (url.includes('?tab=overview')) {
+        const regexTest = /https:\/\/github\.com\/(?<username>.*)\?tab=overview(?<rest>.*)/
+        const res = url.match(regexTest)
+        username = res.groups.username;
+    } else {
+        username = url.replace('https://github.com/', '');
+    }
     return username;
 }
 
