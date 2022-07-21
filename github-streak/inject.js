@@ -198,15 +198,16 @@ function getTotalContributions() {
         if (
             nodes[i].innerHTML &&
             nodes[i].innerHTML.includes('contributions')
+            // check for case
+            // 1: xxxx contributions in the last year
+            // 2: xxxx contributions in xxxx
+            // tbh can use regex to handle both cases
+            // maybe (integer group) contributions in (rest)
         ) {
-            const number = [];
-            for (const k of nodes[i].innerHTML) {
-                if (!isNaN(k) && k != '\n' && k != ' ') {
-                    number.push(k);
-                }
-            }
-            const contributionsString = parseInt(number.join(''));
-            return contributionsString;
+            const regexTest = /(?<contributions>\d*) contributions in (?<rest>.*)/
+            const number = nodes[i].innerHTML.exec(regexTest).groups.contributions;
+            const contributions = parseInt(number);
+            return contributions;
         }
     }
 }
