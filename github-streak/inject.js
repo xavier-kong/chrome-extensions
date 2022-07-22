@@ -1,5 +1,6 @@
 // refactor everything!
 // handle total contributions issue when on overview
+// add check if committed today or not
 async function main() {
     const onProfile = checkIfOnProfile();
     if (onProfile) {
@@ -204,8 +205,11 @@ function getTotalContributions() {
             // tbh can use regex to handle both cases
             // maybe (integer group) contributions in (rest)
         ) {
-            const regexTest = /(?<contributions>\d*) contributions in (?<rest>.*)/
-            const number = nodes[i].innerHTML.exec(regexTest).groups.contributions;
+            console.log(nodes[i])
+            const regexTest = /(?<contributions>.*) contributions in (?<rest>.*)/
+            console.log(JSON.stringify(nodes[i].textContent.replaceAll('\n', '')))
+            console.log(regexTest.exec(nodes[i].textContent))
+            const number = regexTest.exec(nodes[i].innerHTML).groups.contributions;
             const contributions = parseInt(number);
             return contributions;
         }
