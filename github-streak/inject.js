@@ -1,5 +1,4 @@
 // refactor everything!
-// handle total contributions issue when on overview
 // add check if committed today or not
 async function main() {
     const onProfile = checkIfOnProfile();
@@ -199,19 +198,12 @@ function getTotalContributions() {
         if (
             nodes[i].innerHTML &&
             nodes[i].innerHTML.includes('contributions')
-            // check for case
-            // 1: xxxx contributions in the last year
-            // 2: xxxx contributions in xxxx
-            // tbh can use regex to handle both cases
-            // maybe (integer group) contributions in (rest)
+
         ) {
-            console.log(nodes[i])
-            const regexTest = /(?<contributions>.*) contributions in (?<rest>.*)/
-            console.log(JSON.stringify(nodes[i].textContent.replaceAll('\n', '')))
-            console.log(regexTest.exec(nodes[i].textContent))
-            const number = regexTest.exec(nodes[i].innerHTML).groups.contributions;
-            const contributions = parseInt(number);
-            return contributions;
+            const text = (nodes[i].textContent).replaceAll('\n', '').replace(/  +/g, ' ');
+            const regexTest = /(?<contributions>.*) contributions in (?<rest>.*)/;
+            const number = regexTest.exec(text).groups.contributions;
+            return number;
         }
     }
 }
