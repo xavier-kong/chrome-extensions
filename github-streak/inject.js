@@ -64,6 +64,9 @@ async function main() {
             });
 
             appendStreakStatsHtml(streakHtml);
+
+            const committedTodayCheckHtml = createCommittedTodayCheckHtml(latestCommitDay === todayDateString);
+            appendCommittedTodayCheck(committedTodayCheckHtml);
         } else {
             const startDateForm = createStartDateForm(username);
             injectStartDateForm(startDateForm);
@@ -328,6 +331,13 @@ function getStreakHTML(data) {
         `;
         })
         .join('\n');
+}
+
+function createCommittedTodayCheckHtml(committedToday) {
+    return `
+        <div>
+        </div>
+    `
 }
 
 main();
