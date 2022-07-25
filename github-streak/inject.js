@@ -335,9 +335,16 @@ function getStreakHTML(data) {
 
 function createCommittedTodayCheckHtml({ username, committedToday }) {
     return `
-        <div>
+        <div class="committedToday">
+            ${username} ${committedToday ? 'has' : 'has NOT'} committedToday.
         </div>
     `
+}
+
+function appendCommittedTodayCheck(html) {
+    const streakGraph = document.getElementsByClassName('original-streak')[0];
+    streakGraph.appendChild(html);
+    // original sreak
 }
 
 main();
