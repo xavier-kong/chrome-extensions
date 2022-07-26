@@ -336,7 +336,7 @@ function getStreakHTML(data) {
 function createCommittedTodayCheckHtml({ username, committedToday }) {
     return `
         <div class="committedToday">
-            ${username} ${committedToday ? 'has' : 'has NOT'} committedToday.
+            ${username} ${committedToday ? 'has' : 'has NOT'} committed today.
         </div>
     `
 }
