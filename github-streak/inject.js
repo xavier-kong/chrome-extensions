@@ -343,8 +343,11 @@ function createCommittedTodayCheckHtml({ username, committedToday }) {
 
 function appendCommittedTodayCheck(html) {
     const streakGraph = document.getElementsByClassName('original-streak')[0];
-    streakGraph.appendChild(html);
-    // original sreak
+    const container = document.createElement('div');
+    container.innerHTML = html;
+    if (!document.querySelector('.committedToday')) {
+        streakGraph.appendChild(container);
+    }
 }
 
 main();
