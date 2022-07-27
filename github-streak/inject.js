@@ -1,5 +1,4 @@
 // refactor everything!
-// add check if committed today or not
 async function main() {
     const onProfile = checkIfOnProfile();
     if (onProfile) {
