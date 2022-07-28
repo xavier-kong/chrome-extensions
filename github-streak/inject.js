@@ -64,7 +64,7 @@ async function main() {
 
             appendStreakStatsHtml(streakHtml);
 
-            const committedTodayCheckHtml = createCommittedTodayCheckHtml({ username: username, committedToday: latestCommitDay === todayDateString});
+            const committedTodayCheckHtml = `<div class="committedToday">${username} ${latestCommitDay === todayDateString ? 'has' : '<span style="color: red"> has NOT</span>'} committed today.</div>`;
             appendCommittedTodayCheck(committedTodayCheckHtml);
         } else {
             const startDateForm = createStartDateForm(username);
@@ -333,11 +333,7 @@ function getStreakHTML(data) {
 }
 
 function createCommittedTodayCheckHtml({ username, committedToday }) {
-    return `
-        <div class="committedToday">
-            ${username} ${committedToday ? 'has' : '<span style="color: red"> has NOT</span>'} committed today.
-        </div>
-    `
+    return `<div class="committedToday">${username} ${committedToday ? 'has' : '<span style="color: red"> has NOT</span>'} committed today.</div>`
 }
 
 function appendCommittedTodayCheck(html) {
