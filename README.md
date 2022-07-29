@@ -7,6 +7,10 @@ Featured extensions:
 -   [Making YouTube Less Addictive](#making-youtube-less-addictive)
 -   [Stay Productive](#stay-productive)
 
+## GitHub Streak Graphic
+
+As the extension available on the chrome store didn't work. I decided to just make my own...HEAVILY "inspired" by the original.
+
 ## Making YouTube Less Addictive
 
 [Link to repo!](https://github.com/xavier-kong/chrome-extensions/tree/master/make-youtube-better)
