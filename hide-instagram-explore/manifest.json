@@ -1,0 +1,21 @@
+{
+    "name": "Hide Instagram Explore",
+    "description": "Hiding Instagram's Most Addictive Feature",
+    "version": "1.0",
+    "manifest_version": 3,
+    "content_scripts": [
+        {
+            "matches": ["*://www.instagram.com/*"]
+        }
+    ],
+    "permissions": [
+        "tabs",
+        "webNavigation",
+        "storage",
+        "webRequest",
+        "scripting"
+    ],
+    "background": {
+        "service_worker": "background.js"
+    }
+}
