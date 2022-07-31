@@ -3,11 +3,6 @@
     "description": "Hiding Instagram's Most Addictive Feature",
     "version": "1.0",
     "manifest_version": 3,
-    "content_scripts": [
-        {
-            "matches": ["*://www.instagram.com/*"]
-        }
-    ],
     "permissions": [
         "tabs",
         "webNavigation",
@@ -15,6 +10,7 @@
         "webRequest",
         "scripting"
     ],
+    "host_permissions": ["*://www.instagram.com/*"],
     "background": {
         "service_worker": "background.js"
     }
