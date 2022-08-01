@@ -10,8 +10,8 @@
         "webRequest",
         "scripting"
     ],
-    "host_permissions": ["*://www.instagram.com/*"],
-    "background": {
-        "service_worker": "background.js"
-    }
+    "content-scripts": [
+        { "matches": ["*://www.instagram.com/*"], "js": ["inject.js"] }
+    ],
+    "host_permissions": ["*://www.instagram.com/*"]
 }
