@@ -10,7 +10,7 @@
         "webRequest",
         "scripting"
     ],
-    "content-scripts": [
+    "content_scripts": [
         { "matches": ["*://www.instagram.com/*"], "js": ["inject.js"] }
     ],
     "host_permissions": ["*://www.instagram.com/*"]
