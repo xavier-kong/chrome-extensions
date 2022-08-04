@@ -120,6 +120,55 @@ function insertHideCSS(tabId) {
     });
 }
 
+function checkIfCommittedToday() {
+}
+
+function fetchContributionGraphArray(username) {
+    const graphJSON = fetch(
+        `https://github.com/users/${username}/contributions`
+    )
+        .then((res) => res.text())
+        .then((graph) => convertGraphToArray(graph))
+        .catch((e) => {
+            console.log(e);
+            return false;
+        });
+    return graphJSON;
+}
+
+function convertGraphToArray(graph) {
+    let data;
+    let re = /(data-count="\d+".*data-date="\d{4}-\d{2}-\d{2}")/g;
+    let matches = graph.match(re);
+    data = matches.map((match) => {
+        return {
+            count: +match.match(/data-count="(\d+)"/)[1],
+            date: match.match(/data-date="(\d{4}-\d{2}-\d{2})"/)[1],
+        };
+    });
+    return data;
+}
+
+function findMostRecentZeroContribution(contributionArray) {
+    let lastZeroContribution;
+    let latestCommitDay;
+    for (const day of contributionArray) {
+        if (day.count === 0) {
+            lastZeroContribution = day.date;
+        } else {
+            latestCommitDay = day.date;
+        }
+    }
+
+    return {
+        lastZeroContribution,
+        latestCommitDay,
+        graphStart: contributionArray[0].date,
+        graphEnd: contributionArray[contributionArray.length - 1].date,
+    };
+}
+
+
 chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
     if (changeInfo.url.includes('www.youtube.com') && !allowedTime()) {
         chrome.tabs.update(tabId, {
