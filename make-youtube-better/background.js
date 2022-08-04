@@ -121,6 +121,10 @@ function insertHideCSS(tabId) {
 }
 
 function checkIfCommittedToday() {
+    const graphArray = fetchContributionGraphArray('xavier-kong');
+    const { latestCommitDay } = findMostRecentZeroContribution(graphArray);
+    const todayDateString = buildDateString(0);
+    return todayDateString === latestCommitDay;
 }
 
 function fetchContributionGraphArray(username) {
@@ -168,6 +172,15 @@ function findMostRecentZeroContribution(contributionArray) {
     };
 }
 
+function buildDateString(days) {
+    const date = new Date(new Date().setDate(new Date().getDate() - days));
+    const monthString =
+        date.getMonth() > 9 ? date.getMonth() + 1 : `0${date.getMonth() + 1}`;
+    const dateSting =
+        date.getDate() > 9 ? date.getDate() : `0${date.getDate()}`;
+    const fullDateString = `${date.getFullYear()}-${monthString}-${dateSting}`;
+    return fullDateString;
+}
 
 chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
     if (changeInfo.url.includes('www.youtube.com') && !allowedTime()) {
