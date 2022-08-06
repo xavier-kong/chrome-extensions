@@ -140,19 +140,26 @@ chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
         let cachedData;
         chrome.storage.local.get(['allow-youtube'], (result) => {
             if (result) {
-                cachedData = result['allow-youtube']
-                    // need to check date of cachedData
+                const cachedDate = result['allow-youtube'].date;
+                const dateIsToday = checkDate(cachedDate);
+                if (!dateIsToday) {
+                    result['allow-youtube'].date = createDate();
+                    cachedData = result['allow-youtube'];
+                }
             } else {
-                // set data
-                //
+                cachedData = {
+                    date: createDate(),
+                    committedToday: false
+                };
             }
         })
-// check cached
-                // if cache allow then allow
-                // if cache not allow then check if commit
-                // if commit update data then allow
-                // if no commit block
-
+        if (cachedData.committedToday) {
+            // allow
+        } else {
+            // check if commit
+            // if commit update data then allow
+            // if no commit block
+        }
     }
 })
 
