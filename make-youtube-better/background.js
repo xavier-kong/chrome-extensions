@@ -154,9 +154,14 @@ chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
             }
         })
         if (!cachedData.committedToday) {
-            // check if commit
-            // if commit update data then allow
-            // if no commit block
+            const committedToday = checkIfCommittedToday();
+            if (committedToday) {
+                cachedData.committedToday = true
+                // update data
+                // allow is implicitly performed by not redirecting
+            } else {
+                // redirect
+            }
         }
     }
 })
