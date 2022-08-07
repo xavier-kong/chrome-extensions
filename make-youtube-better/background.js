@@ -153,9 +153,7 @@ chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
                 };
             }
         })
-        if (cachedData.committedToday) {
-            // allow
-        } else {
+        if (!cachedData.committedToday) {
             // check if commit
             // if commit update data then allow
             // if no commit block
