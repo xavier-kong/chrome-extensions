@@ -161,7 +161,9 @@ chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
                     'allow-youtube': cachedData
                 });
             } else {
-                // redirect
+                chrome.tabs.update(tabId, {
+                    url: 'https://github.com/xavier-kong'
+                })
             }
         }
     }
