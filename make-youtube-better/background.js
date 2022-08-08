@@ -157,8 +157,9 @@ chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
             const committedToday = checkIfCommittedToday();
             if (committedToday) {
                 cachedData.committedToday = true
-                // update data
-                // allow is implicitly performed by not redirecting
+                chrome.storage.local.set({
+                    'allow-youtube': cachedData
+                });
             } else {
                 // redirect
             }
