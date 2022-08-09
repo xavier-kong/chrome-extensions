@@ -135,24 +135,32 @@ function buildDateString(days) {
     return fullDateString;
 }
 
-chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
-    if (changeInfo.url.includes('www.youtube.com')) {
+function fetchCachedData() {
+    chrome.storage.local.get(['allow-youtube'], (result) => {
         let cachedData;
-        chrome.storage.local.get(['allow-youtube'], (result) => {
-            if (result) {
-                const cachedDate = result['allow-youtube'].date;
-                const dateIsToday = checkDate(cachedDate);
-                if (!dateIsToday) {
-                    result['allow-youtube'].date = createDate();
-                    cachedData = result['allow-youtube'];
-                }
-            } else {
-                cachedData = {
-                    date: createDate(),
-                    committedToday: false
-                };
+        if ('allow-youtube' in result) {
+            const cachedDate = result['allow-youtube'].date;
+            const dateIsToday = checkDate(cachedDate);
+            if (!dateIsToday) {
+                result['allow-youtube'].date = createDate();
+                cachedData = result['allow-youtube'];
             }
-        })
+        } else {
+            cachedData = {
+                date: createDate(),
+                committedToday: false
+            };
+        }
+        this.cachedData = cachedData;
+    })
+}
+
+chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
+    if (tab.url.includes('www.youtube.com')) {
+        fetchCachedData();
+        let cachedData = this.cachedData;
+        console.log(cachedData)
+
         if (!cachedData.committedToday) {
             const committedToday = checkIfCommittedToday();
             if (committedToday) {
