@@ -81,9 +81,7 @@ function checkIfCommittedToday() {
 }
 
 function fetchContributionGraphArray(username) {
-    const graphJSON = fetch(
-        `https://github.com/users/${username}/contributions`
-    )
+    const graphJSON = fetch(`https://github.com/users/${username}/contributions`)
         .then((res) => res.text())
         .then((graph) => convertGraphToArray(graph))
         .catch((e) => {
@@ -107,22 +105,34 @@ function convertGraphToArray(graph) {
 }
 
 function findMostRecentZeroContribution(contributionArray) {
-    let lastZeroContribution;
-    let latestCommitDay;
-    for (const day of contributionArray) {
-        if (day.count === 0) {
-            lastZeroContribution = day.date;
-        } else {
-            latestCommitDay = day.date;
+    //let lastZeroContribution, latestCommitDay, graphStart, graphEnd
+    const latestCommitDayTemp = contributionArray.then(array => {
+        for (const day of array) {
+            if (day.count === 0) {
+                lastZeroContribution = day.date;
+            } else {
+                latestCommitDay = day.date;
+            }
         }
+
+        graphStart = array[0].date;
+        graphEnd = array[array.length - 1].date;
+        return latestCommitDay
+
+
+    })
+
+    return {
+        latestCommitDay: latestCommitDayTemp
     }
 
     return {
         lastZeroContribution,
         latestCommitDay,
-        graphStart: contributionArray[0].date,
-        graphEnd: contributionArray[contributionArray.length - 1].date,
+        graphStart,
+        graphEnd
     };
+
 }
 
 function buildDateString(days) {
