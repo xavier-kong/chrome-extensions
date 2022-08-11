@@ -77,9 +77,10 @@ function checkIfCommittedToday() {
     const graphArray = fetchContributionGraphArray('xavier-kong');
     const { latestCommitDay } = findMostRecentZeroContribution(graphArray);
     const todayDateString = buildDateString(0);
-    latestCommitDay.then(day => {
+    const committedToday = latestCommitDay.then(day => {
         return day === todayDateString;
     })
+    return committedToday;
 }
 
 function fetchContributionGraphArray(username) {
@@ -164,17 +165,19 @@ chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
             }
 
             if (!cachedData.committedToday) {
-            const committedToday = checkIfCommittedToday();
-                if (committedToday) {
-                    cachedData.committedToday = true
-                    chrome.storage.local.set({
-                        'allow-youtube': cachedData
-                    });
-                } else {
-                    chrome.tabs.update(tabId, {
-                        url: 'https://github.com/xavier-kong'
-                    })
-                }
+                checkIfCommittedToday().then(committedToday => {
+                    if (committedToday) {
+                        cachedData.committedToday = true
+                        chrome.storage.local.set({
+                            'allow-youtube': cachedData
+                        });
+                    } else {
+                        chrome.tabs.update(tabId, {
+                            url: 'https://github.com/xavier-kong'
+                        })
+                    }
+                })
+
             }
         })
 
