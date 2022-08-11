@@ -77,7 +77,9 @@ function checkIfCommittedToday() {
     const graphArray = fetchContributionGraphArray('xavier-kong');
     const { latestCommitDay } = findMostRecentZeroContribution(graphArray);
     const todayDateString = buildDateString(0);
-    return todayDateString === latestCommitDay;
+    latestCommitDay.then(day => {
+        return day === todayDateString;
+    })
 }
 
 function fetchContributionGraphArray(username) {
@@ -118,8 +120,6 @@ function findMostRecentZeroContribution(contributionArray) {
         graphStart = array[0].date;
         graphEnd = array[array.length - 1].date;
         return latestCommitDay
-
-
     })
 
     return {
