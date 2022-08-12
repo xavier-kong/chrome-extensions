@@ -1,6 +1,5 @@
+// add exception if video channel is neetcode
 
-
-// refresh counts when window is created and date is not the same
 
 function createDate(dateString) {
     const date = dateString ? new Date(dateString) : new Date();
@@ -108,7 +107,6 @@ function convertGraphToArray(graph) {
 }
 
 function findMostRecentZeroContribution(contributionArray) {
-    //let lastZeroContribution, latestCommitDay, graphStart, graphEnd
     const latestCommitDayTemp = contributionArray.then(array => {
         for (const day of array) {
             if (day.count === 0) {
@@ -126,14 +124,6 @@ function findMostRecentZeroContribution(contributionArray) {
     return {
         latestCommitDay: latestCommitDayTemp
     }
-
-    return {
-        lastZeroContribution,
-        latestCommitDay,
-        graphStart,
-        graphEnd
-    };
-
 }
 
 function buildDateString(days) {
@@ -149,38 +139,29 @@ function buildDateString(days) {
 chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
     if (tab.url.includes('www.youtube.com')) {
         chrome.storage.local.get(['allow-youtube'], (result) => {
-            let cachedData;
             if ('allow-youtube' in result) {
-                const cachedDate = result['allow-youtube'].date;
-                const dateIsToday = checkDate(cachedDate);
-                if (!dateIsToday) {
-                    result['allow-youtube'].date = createDate();
-                    cachedData = result['allow-youtube'];
+                const { date, committedToday } = result['allow-youtube'];
+                const dateIsToday = checkDate(date);
+                if (dateIsToday && committedToday) {
+                    return;
                 }
-            } else {
-                cachedData = {
-                    date: createDate(),
-                    committedToday: false
-                };
             }
 
-            if (!cachedData.committedToday) {
-                checkIfCommittedToday().then(committedToday => {
-                    if (committedToday) {
-                        cachedData.committedToday = true
-                        chrome.storage.local.set({
-                            'allow-youtube': cachedData
-                        });
-                    } else {
-                        chrome.tabs.update(tabId, {
-                            url: 'https://github.com/xavier-kong'
-                        })
-                    }
-                })
-
-            }
+            checkIfCommittedToday().then(committedToday => {
+                if (committedToday) {
+                    chrome.storage.local.set({
+                        'allow-youtube': {
+                            date: createDate(),
+                            committedToday: true
+                        }
+                    });
+                } else {
+                    chrome.tabs.update(tabId, {
+                        url: 'https://github.com/xavier-kong'
+                    })
+                }
+            })
         })
-
     }
 })
 
