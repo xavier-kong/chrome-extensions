@@ -1,6 +1,5 @@
 // add exception if video channel is neetcode
 
-
 function createDate(dateString) {
     const date = dateString ? new Date(dateString) : new Date();
     return {
@@ -137,7 +136,7 @@ function buildDateString(days) {
 }
 
 chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
-    if (tab.url.includes('www.youtube.com')) {
+    if (changeInfo.status !== 'loading' && tab.url.includes('www.youtube.com') && (changeInfo.title && !changeInfo.title.toLowerCase().includes('leetcode'))) {
         chrome.storage.local.get(['allow-youtube'], (result) => {
             if ('allow-youtube' in result) {
                 const { date, committedToday } = result['allow-youtube'];
