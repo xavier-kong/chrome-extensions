@@ -1,4 +1,4 @@
-// add exception if video channel is neetcode
+// check if submitted to leetcode
 
 function createDate(dateString) {
     const date = dateString ? new Date(dateString) : new Date();
