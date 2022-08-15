@@ -1,4 +1,6 @@
 // to only allow use during allowed hours
+// convert to same as youtube unify both:q
+//
 
 function isWeekend() {
     const currentDay = new Date().getDay();
@@ -119,6 +121,12 @@ function noRelatedTabs(result, name) {
     }
     return true;
 }
+
+// use hash map to check if bad site
+// if bad site fetch from cache
+// if result check if date is today and commited: return (implicit allow)
+// check if committed + done leetcode + cs study then update data
+// if not then find what has not been done and open those pages
 
 chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
     const site = isBadSite(changeInfo.url, sites);
