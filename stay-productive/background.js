@@ -128,6 +128,8 @@ function noRelatedTabs(result, name) {
 // check if committed + done leetcode + cs study then update data
 // if not then find what has not been done and open those pages
 
+const badSites = ["youtube.com", "discord.com", "instagram.com", "facebook.com", "linkedin.com"];
+
 chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
     const site = isBadSite(changeInfo.url, sites);
     if (site && !changeInfo.url.includes('chrome-extension://')) {
