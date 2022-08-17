@@ -131,7 +131,11 @@ function noRelatedTabs(result, name) {
 const badSites = ["youtube.com", "discord.com", "instagram.com", "facebook.com", "linkedin.com"];
 
 chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
-    const site = isBadSite(changeInfo.url, sites);
+    const site = isBadSite(changeInfo.url, badSites);
+
+
+
+
     if (site && !changeInfo.url.includes('chrome-extension://')) {
         if (allowedTime()) {
             chrome.storage.local.get(['stay-productive'], async (result) => {
