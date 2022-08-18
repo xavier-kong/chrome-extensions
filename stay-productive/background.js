@@ -21,7 +21,7 @@ function allowedTime() {
     }
 }
 
-function isBadSite(url, sites) {
+function checkIfBadSite(url, sites) {
     for (let i = 0; i < sites.length; i++) {
         if (url.includes(sites[i])) {
             return sites[i];
@@ -131,7 +131,15 @@ function noRelatedTabs(result, name) {
 const badSites = ["youtube.com", "discord.com", "instagram.com", "facebook.com", "linkedin.com"];
 
 chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
-    const site = isBadSite(changeInfo.url, badSites);
+    const isBadSite = checkIfBadSite(changeInfo.url, badSites);
+
+    if (isBadSite) {
+        chrome.storage.local.get(['stay-productive'], async (result) => {
+
+        })
+    }
+
+
 
 
 
