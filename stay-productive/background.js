@@ -24,7 +24,8 @@ function allowedTime() {
 function checkIfBadSite(url, sites) {
     for (let i = 0; i < sites.length; i++) {
         if (url.includes(sites[i])) {
-            return sites[i];
+            return site:q
+            s[i];
         }
     }
     return false;
@@ -133,8 +134,11 @@ const badSites = ["youtube.com", "discord.com", "instagram.com", "facebook.com",
 chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
     const isBadSite = checkIfBadSite(changeInfo.url, badSites);
 
-    if (isBadSite) {
+    if (isBadSite && changeInfo.status !== 'loading' && (changeInfo.title && !changeInfo.title.toLowerCase().includes('leetcode'))) {
         chrome.storage.local.get(['stay-productive'], async (result) => {
+            if ('stay-productive' in result) {
+                const { date, committedToday } = result['stay-productive'];
+            }
 
         })
     }
