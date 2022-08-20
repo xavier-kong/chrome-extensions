@@ -138,7 +138,12 @@ chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
         chrome.storage.local.get(['stay-productive'], async (result) => {
             if ('stay-productive' in result) {
                 const { date, committedToday } = result['stay-productive'];
+                const dateIsToday = checkDate(date);
+                if (dateIsToday && committedToday) {
+                    return;
+                }
             }
+
 
         })
     }
