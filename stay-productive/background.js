@@ -143,6 +143,21 @@ chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
                 }
             }
 
+            checkIfCommittedToday().then(committedToday => {
+                if (committedToday) {
+                    chrome.storage.local.set({
+                        'stay-productive': {
+                            date: createDate(),
+                            committedToday: true
+                        }
+                    });
+                } else {
+                    chrome.tabs.update(tabId, {
+                        url: 'https://github.com/xavier-kong'
+                    });
+                }
+            });
+
 
         })
     }
