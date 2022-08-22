@@ -221,68 +221,6 @@ chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
                     });
                 }
             });
-
-
         })
-    }
-
-
-
-
-
-
-    if (site && !changeInfo.url.includes('chrome-extension://')) {
-        if (allowedTime()) {
-            chrome.storage.local.get(['stay-productive'], async (result) => {
-                const { sites, date } = result['stay-productive'];
-
-                for (let i = 0; i < sites.length; i++) {
-                    const { name, count, forgive } = sites[i];
-                    if (name === site) {
-                        if (forgive) {
-                            chrome.tabs.onRemoved.addListener((newTabId) => {
-                                if (tabId === newTabId) {
-                                    chrome.tabs.query({}, (result) => {
-                                        if (noRelatedTabs(result, name)) {
-                                            sites[i].forgive = false;
-                                            const data = {
-                                                'stay-productive': {
-                                                    date: date,
-                                                    sites: sites,
-                                                },
-                                            };
-
-                                            chrome.storage.local.set({
-                                                'stay-productive':
-                                                    data['stay-productive'],
-                                            });
-                                        }
-                                    });
-                                }
-                            });
-
-                            if (name === 'linkedin.com') {
-                                chrome.scripting.executeScript({
-                                    target: { tabId: tabId },
-                                    files: ['./linkedin.js'],
-                                });
-                            }
-                        } else if (count >= 1) {
-                            chrome.tabs.update(tabId, {
-                                url: `./pages/redirect/redirect.html?url=${changeInfo.url}`,
-                            });
-                        } else if (count === 0) {
-                            chrome.tabs.update(tabId, {
-                                url: `./pages/block/block.html`,
-                            });
-                        }
-                    }
-                }
-            });
-        } else {
-            chrome.tabs.update(tabId, {
-                url: './pages/countdown/countdown.html',
-            });
-        }
     }
 });
