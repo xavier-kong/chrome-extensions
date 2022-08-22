@@ -122,6 +122,70 @@ function noRelatedTabs(result, name) {
     return true;
 }
 
+function checkIfCommittedToday() {
+    const graphArray = fetchContributionGraphArray('xavier-kong');
+    const { latestCommitDay } = findMostRecentZeroContribution(graphArray);
+    const todayDateString = buildDateString(0);
+    const committedToday = latestCommitDay.then(day => {
+        return day === todayDateString;
+    })
+    return committedToday;
+}
+
+function fetchContributionGraphArray(username) {
+    const graphJSON = fetch(`https://github.com/users/${username}/contributions`)
+        .then((res) => res.text())
+        .then((graph) => convertGraphToArray(graph))
+        .catch((e) => {
+            console.log(e);
+            return false;
+        });
+    return graphJSON;
+}
+
+function convertGraphToArray(graph) {
+    let data;
+    let re = /(data-count="\d+".*data-date="\d{4}-\d{2}-\d{2}")/g;
+    let matches = graph.match(re);
+    data = matches.map((match) => {
+        return {
+            count: +match.match(/data-count="(\d+)"/)[1],
+            date: match.match(/data-date="(\d{4}-\d{2}-\d{2})"/)[1],
+        };
+    });
+    return data;
+}
+
+function findMostRecentZeroContribution(contributionArray) {
+    const latestCommitDayTemp = contributionArray.then(array => {
+        for (const day of array) {
+            if (day.count === 0) {
+                lastZeroContribution = day.date;
+            } else {
+                latestCommitDay = day.date;
+            }
+        }
+
+        graphStart = array[0].date;
+        graphEnd = array[array.length - 1].date;
+        return latestCommitDay
+    })
+
+    return {
+        latestCommitDay: latestCommitDayTemp
+    }
+}
+
+function buildDateString(days) {
+    const date = new Date(new Date().setDate(new Date().getDate() - days));
+    const monthString =
+        date.getMonth() > 9 ? date.getMonth() + 1 : `0${date.getMonth() + 1}`;
+    const dateSting =
+        date.getDate() > 9 ? date.getDate() : `0${date.getDate()}`;
+    const fullDateString = `${date.getFullYear()}-${monthString}-${dateSting}`;
+    return fullDateString;
+}
+
 // use hash map to check if bad site
 // if bad site fetch from cache
 // if result check if date is today and commited: return (implicit allow)
