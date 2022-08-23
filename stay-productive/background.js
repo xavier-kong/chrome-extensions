@@ -186,11 +186,7 @@ function buildDateString(days) {
     return fullDateString;
 }
 
-// use hash map to check if bad site
-// if bad site fetch from cache
-// if result check if date is today and commited: return (implicit allow)
 // check if committed + done leetcode + cs study then update data
-// if not then find what has not been done and open those pages
 
 const badSites = ["youtube.com", "discord.com", "instagram.com", "facebook.com", "linkedin.com"];
 
