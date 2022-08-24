@@ -24,7 +24,7 @@ function allowedTime() {
 function checkIfBadSite(url, sites) {
     for (let i = 0; i < sites.length; i++) {
         if (url.includes(sites[i])) {
-            return sites[i];
+            return true;
         }
     }
     return false;
