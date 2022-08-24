@@ -191,32 +191,33 @@ function buildDateString(days) {
 const badSites = ["youtube.com", "discord.com", "instagram.com", "facebook.com", "linkedin.com"];
 
 chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
-    const isBadSite = checkIfBadSite(changeInfo.url, badSites);
-
-    if (isBadSite && changeInfo.status !== 'loading' && (changeInfo.title && !changeInfo.title.toLowerCase().includes('leetcode'))) {
-        chrome.storage.local.get(['stay-productive'], async (result) => {
-            if ('stay-productive' in result) {
-                const { date, committedToday } = result['stay-productive'];
-                const dateIsToday = checkDate(date);
-                if (dateIsToday && committedToday) {
-                    return;
+    if (changeInfo.status !== 'loading' && (changeInfo.title && !changeInfo.title.toLowerCase().includes('leetcode'))) {
+        const isBadSite = checkIfBadSite(changeInfo.url, badSites);
+        if (isBadSite) {
+            chrome.storage.local.get(['stay-productive'], async (result) => {
+                if ('stay-productive' in result) {
+                    const { date, committedToday } = result['stay-productive'];
+                    const dateIsToday = checkDate(date);
+                    if (dateIsToday && committedToday) {
+                        return;
+                    }
                 }
-            }
 
-            checkIfCommittedToday().then(committedToday => {
-                if (committedToday) {
-                    chrome.storage.local.set({
-                        'stay-productive': {
-                            date: createDate(),
-                            committedToday: true
-                        }
-                    });
-                } else {
-                    chrome.tabs.update(tabId, {
-                        url: 'https://github.com/xavier-kong'
-                    });
-                }
-            });
-        })
+                checkIfCommittedToday().then(committedToday => {
+                    if (committedToday) {
+                        chrome.storage.local.set({
+                            'stay-productive': {
+                                date: createDate(),
+                                committedToday: true
+                            }
+                        });
+                    } else {
+                        chrome.tabs.update(tabId, {
+                            url: 'https://github.com/xavier-kong'
+                        });
+                    }
+                });
+            })
+        }
     }
 });
