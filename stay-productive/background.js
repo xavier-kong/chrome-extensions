@@ -22,9 +22,11 @@ function allowedTime() {
 }
 
 function checkIfBadSite(url, sites) {
-    for (let i = 0; i < sites.length; i++) {
-        if (url.includes(sites[i])) {
-            return true;
+    if (url) {
+        for (let i = 0; i < sites.length; i++) {
+            if (url.includes(sites[i])) {
+                return true;
+            }
         }
     }
     return false;
@@ -191,12 +193,7 @@ function buildDateString(days) {
 const badSites = ["youtube.com", "discord.com", "instagram.com", "facebook.com", "linkedin.com"];
 
 chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
-    if (changeInfo.url) {
-        const isBadSite = checkIfBadSite(changeInfo.url, badSites);
-
-    }
-
-    if ((changeInfo.title && !changeInfo.title.toLowerCase().includes('leetcode'))) {
+    if (changeInfo.url || (!changeInfo.title?.toLowerCase().includes('leetcode'))) {
         const isBadSite = checkIfBadSite(changeInfo.url, badSites);
         if (isBadSite) {
             chrome.storage.local.get(['stay-productive'], async (result) => {

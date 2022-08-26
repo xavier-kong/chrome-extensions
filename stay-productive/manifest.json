@@ -26,7 +26,7 @@
         "webRequest",
         "scripting"
     ],
-    "host_permissions": ["*://www.youtube.com/*"],
+    "host_permissions": ["*://www.youtube.com/*", "*://github.com/*"],
     "background": {
         "service_worker": "background.js"
     }
