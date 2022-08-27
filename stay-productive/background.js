@@ -1,7 +1,8 @@
-function checkIfBadSite(url, sites) {
+function checkIfBadSite(url) {
+    const badSites = ["youtube.com", "discord.com", "instagram.com", "facebook.com", "linkedin.com"];
     if (url) {
-        for (let i = 0; i < sites.length; i++) {
-            if (url.includes(sites[i])) {
+        for (let i = 0; i < badSites.length; i++) {
+            if (url.includes(badSites[i])) {
                 return true;
             }
         }
@@ -24,8 +25,6 @@ function checkDate(date) {
 
     return day === testDay && month === testMonth && year === testYear;
 }
-
-// to redirect user based on site type, current time and remaining visits allowed
 
 function checkIfCommittedToday() {
     const graphArray = fetchContributionGraphArray('xavier-kong');
@@ -93,11 +92,9 @@ function buildDateString(days) {
 
 // check if committed + done leetcode + cs study then update data
 
-const badSites = ["youtube.com", "discord.com", "instagram.com", "facebook.com", "linkedin.com"];
-
 chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
     if (changeInfo.url || (!changeInfo.title?.toLowerCase().includes('leetcode'))) {
-        const isBadSite = checkIfBadSite(changeInfo.url, badSites);
+        const isBadSite = checkIfBadSite(changeInfo.url);
         if (isBadSite) {
             chrome.storage.local.get(['stay-productive'], async (result) => {
                 if ('stay-productive' in result) {
