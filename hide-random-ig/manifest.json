@@ -1,0 +1,17 @@
+{
+    "name": "Hide Random IG Content",
+    "description": "Hiding Random IG Posts",
+    "version": "1.0",
+    "manifest_version": 3,
+    "permissions": [
+        "tabs",
+        "webNavigation",
+        "storage",
+        "webRequest",
+        "scripting"
+    ],
+    "content_scripts": [
+        { "matches": ["*://www.instagram.com/*"], "js": ["inject.js"] }
+    ],
+    "host_permissions": ["*://www.instagram.com/*"]
+}
