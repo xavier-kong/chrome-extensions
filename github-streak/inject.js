@@ -124,14 +124,15 @@ function fetchContributionGraphArray(username) {
 
 function convertGraphToArray(graph) {
     let data;
-    let re = /(data-count="\d+".*data-date="\d{4}-\d{2}-\d{2}")/g;
+    let re = /(class="ContributionCalendar-day".*data-date="\d{4}-\d{2}-\d{2}" data-level="([0-9]+)")/g;
     let matches = graph.match(re);
     data = matches.map((match) => {
         return {
-            count: +match.match(/data-count="(\d+)"/)[1],
-            date: match.match(/data-date="(\d{4}-\d{2}-\d{2})"/)[1],
+			count: match.match(/data-level="(\d+)"/)[1],
+			date: match.match(/data-date="(\d{4}-\d{2}-\d{2})"/)[1],
         };
     });
+
     return data;
 }
 
@@ -214,7 +215,7 @@ function findMostRecentZeroContribution(contributionArray) {
     let lastZeroContribution;
     let latestCommitDay;
     for (const day of contributionArray) {
-        if (day.count === 0) {
+        if (day.count === '0') {
             lastZeroContribution = day.date;
         } else {
             latestCommitDay = day.date;
@@ -252,7 +253,7 @@ function createDateFromDateString(dateString) {
     const regexTest = /(?<year>\d{4})-(?<month>\d{2})-(?<day>\d{2})/;
     const match = regexTest.exec(dateString);
     const { year, month, day } = match.groups;
-    const date = new Date(year, month, day);
+    const date = new Date(year, month - 1, day);
     return date;
 }
 
