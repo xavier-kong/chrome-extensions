@@ -1,0 +1,20 @@
+{
+    "name": "Hide YouTube Search",
+    "description": "Hide the search bar",
+    "version": "1.0",
+    "manifest_version": 3,
+    "content_scripts": [
+        {
+            "matches": ["*://www.youtube.com/*"],
+            "js": ["main.js"]
+        }
+    ],
+    "permissions": [
+        "tabs",
+        "webNavigation",
+        "storage",
+        "webRequest",
+        "scripting"
+    ],
+    "host_permissions": ["*://www.youtube.com/*", "*://github.com/*"]
+}
