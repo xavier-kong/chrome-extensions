@@ -13,6 +13,7 @@ async function main() {
                 graphStart,
                 graphEnd,
             } = findMostRecentZeroContribution(graphArray);
+
             const todayDateString = buildDateString(0);
             let currentStreakStartDate = currentStreak.startDate;
             let currentStreakEndDate = todayDateString;
@@ -128,8 +129,8 @@ function convertGraphToArray(graph) {
     let matches = graph.match(re);
     data = matches.map((match) => {
         return {
-			count: match.match(/data-level="(\d+)"/)[1],
-			date: match.match(/data-date="(\d{4}-\d{2}-\d{2})"/)[1],
+            count: match.match(/data-level="(\d+)"/)[1],
+            date: match.match(/data-date="(\d{4}-\d{2}-\d{2})"/)[1],
         };
     });
 
@@ -148,7 +149,10 @@ function createStartDateForm(username) {
                     type="date"
                     id="currentStreakStartDate"
                     name="currentStreakStartDate"
-                <button type="button" id="startDateFormSubmitButton">Submit</button>
+                    type="button"
+                    value="Submit"
+                    onclick="onStartDateFormClick"
+                >
             </form>
         </div>
     `;
@@ -214,20 +218,50 @@ function getTotalContributions() {
 function findMostRecentZeroContribution(contributionArray) {
     let lastZeroContribution;
     let latestCommitDay;
+    let graphStart = contributionArray[0].date;
+    let graphEnd = contributionArray[0].date;
+
     for (const day of contributionArray) {
         if (day.count === '0') {
-            lastZeroContribution = day.date;
+            if (!lastZeroContribution || compareDates(lastZeroContribution, day.date) === 1) {
+                lastZeroContribution = day.date;
+            }
         } else {
-            latestCommitDay = day.date;
+            if (!latestCommitDay || compareDates(latestCommitDay, day.date) === -1) {
+                latestCommitDay = day.date;
+            }
+        }
+
+        if (compareDates(graphStart, day.date) === 1) {
+            graphStart = day.date;
+        }
+
+        if (compareDates(graphEnd, day.date) === -1) {
+            graphEnd = day.date;
         }
     }
 
     return {
         lastZeroContribution,
         latestCommitDay,
-        graphStart: contributionArray[0].date,
-        graphEnd: contributionArray[contributionArray.length - 1].date,
+        graphStart,
+        graphEnd,
     };
+}
+
+function compareDates(firstDate, secondDate) {
+    const firstDateObject = createDateFromDateString(firstDate);
+    const secondDateObject = createDateFromDateString(secondDate);
+
+    // if first date is earlier than second date return -1
+    if (firstDateObject.getTime() < secondDateObject.getTime()) {
+        return -1;
+        // if second date is earlier than first date return 1
+    } else if (secondDateObject.getTime() < firstDateObject.getTime()) {
+        return 1;
+    } else {
+        return 0;
+    }
 }
 
 function buildDateString(days) {
@@ -321,14 +355,14 @@ function getStreakHTML(data) {
     return data
         .map((item, index) => {
             return `
-        <div class="contrib-column table-column ${
-            index === 0 ? 'contrib-column-first' : ''
-        }">
-            <span class="text-muted">${item[0]}</span>
-            <span class="contrib-number">${item[1]}</span>
+            <div class="contrib-column table-column ${
+                index === 0 ? 'contrib-column-first' : ''
+                }">
+                <span class="text-muted">${item[0]}</span>
+                <span class="contrib-number">${item[1]}</span>
             <span class="text-muted">${item[2]}</span>
         </div>
-        `;
+                `;
         })
         .join('\n');
 }
