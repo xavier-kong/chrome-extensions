@@ -1,77 +1,81 @@
-// refactor everything!
 async function main() {
     const onProfile = checkIfOnProfile();
-    if (onProfile) {
-        const username = getUsername();
-        const { longestStreak, currentStreak } = await getData(username);
-        if (currentStreak) {
-            const graphArray = await fetchContributionGraphArray(username);
-            const totalContributions = getTotalContributions();
-            const {
-                lastZeroContribution,
-                latestCommitDay,
-                graphStart,
-                graphEnd,
-            } = findMostRecentZeroContribution(graphArray);
 
-            const todayDateString = buildDateString(0);
-            let currentStreakStartDate = currentStreak.startDate;
-            let currentStreakEndDate = todayDateString;
-            let currentLongestStreak = longestStreak ? longestStreak : { length: 0 };
-            if (lastZeroContribution) {
-                if (lastZeroContribution === todayDateString) {
-                    // change end date to ytd
-                    currentStreakEndDate = buildDateString(1);
-                } else {
-                    currentStreakStartDate = todayDateString;
-                }
-            }
+    if (!onProfile) {
+        return;
+    }
 
-            const currentStreakLength = calculateStreakLength(
-                currentStreakStartDate,
-                currentStreakEndDate
-            );
+    const username = getUsername();
+    const { longestStreak, currentStreak } = await getData(username);
 
-            if (currentStreakLength > currentLongestStreak.length) {
-                currentLongestStreak = {
-                    startDay: currentStreakStartDate,
-                    endDay: currentStreakEndDate,
-                    length: currentStreakLength,
-                };
-            }
+    if (!currentStreak) {
+        injectStartDateForm(username);
+        return;
+    }
 
-            await updateData({
-                username,
-                currentLongestStreak,
-                currentStreak: {
-                    length: currentStreakLength,
-                    startDate: currentStreakStartDate,
-                },
-            });
+    const graphArray = await fetchContributionGraphArray(username);
+    const totalContributions = getTotalContributions();
+    const {
+        lastZeroContribution,
+        latestCommitDay,
+        graphStart,
+        graphEnd,
+    } = findMostRecentZeroContribution(graphArray);
 
-            const streakHtml = buildHtml({
-                latestCommitDay,
-                longestStreak: currentLongestStreak,
-                currentStreak: {
-                    length: currentStreakLength,
-                    startDate: currentStreakStartDate,
-                },
-                totalContributions,
-                graph: {
-                    startDate: graphStart,
-                    endDate: graphEnd,
-                },
-            });
+    const todayDateString = buildDateString(0);
+    let currentStreakStartDate = currentStreak.startDate;
 
-            appendStreakStatsHtml(streakHtml);
-
-            const committedTodayCheckHtml = `<div class="committedToday">${username} ${latestCommitDay === todayDateString ? 'has' : '<span style="color: red"> has NOT</span>'} committed today.</div>`;
-            appendCommittedTodayCheck(committedTodayCheckHtml);
+    let currentStreakEndDate = todayDateString;
+    let currentLongestStreak = longestStreak ? longestStreak : { length: 0 };
+    if (lastZeroContribution) {
+        if (lastZeroContribution === todayDateString) {
+            // change end date to ytd
+            currentStreakEndDate = buildDateString(1);
         } else {
-            const startDateForm = createStartDateForm(username);
-            injectStartDateForm(startDateForm);
+            currentStreakStartDate = todayDateString;
         }
     }
+
+    const currentStreakLength = calculateStreakLength(
+        currentStreakStartDate,
+        currentStreakEndDate
+    );
+
+    if (currentStreakLength > currentLongestStreak.length) {
+        currentLongestStreak = {
+            startDay: currentStreakStartDate,
+            endDay: currentStreakEndDate,
+            length: currentStreakLength,
+        };
+    }
+
+    await updateData({
+        username,
+        currentLongestStreak,
+        currentStreak: {
+            length: currentStreakLength,
+            startDate: currentStreakStartDate,
+        },
+    });
+
+    const streakHtml = buildHtml({
+        latestCommitDay,
+        longestStreak: currentLongestStreak,
+        currentStreak: {
+            length: currentStreakLength,
+            startDate: currentStreakStartDate,
+        },
+        totalContributions,
+        graph: {
+            startDate: graphStart,
+            endDate: graphEnd,
+        },
+    });
+
+    appendStreakStatsHtml(streakHtml);
+
+    const committedTodayCheckHtml = `<div class="committedToday">${username} ${latestCommitDay === todayDateString ? 'has' : '<span style="color: red"> has NOT</span>'} committed today.</div>`;
+    appendCommittedTodayCheck(committedTodayCheckHtml);
 }
 
 function checkIfOnProfile() {
@@ -93,7 +97,7 @@ function getUsername() {
 }
 
 function getData(username) {
-    return new Promise((resolve, reject) => {
+    return new Promise((resolve) => {
         chrome.storage.local.get(['github-streak'], function (result) {
             if (
                 result &&
@@ -107,8 +111,6 @@ function getData(username) {
         });
     });
 }
-
-const readLocalStorage = async (key) => {};
 
 function fetchContributionGraphArray(username) {
     const graphJSON = fetch(
@@ -137,27 +139,6 @@ function convertGraphToArray(graph) {
     return data;
 }
 
-function createStartDateForm(username) {
-    return `
-        <div class="startDateFormContainer" >
-            <form id="startDateForm">
-                <label for="currentStreakStartDate">
-                    Please Enter Current Streak Start Date for ${username}:
-                </label>
-                <br />
-                <input
-                    type="date"
-                    id="currentStreakStartDate"
-                    name="currentStreakStartDate"
-                    type="button"
-                    value="Submit"
-                    onclick="onStartDateFormClick"
-                >
-            </form>
-        </div>
-    `;
-}
-
 async function onStartDateFormClick(event) {
     event.preventDefault();
     const username = getUsername();
@@ -172,9 +153,27 @@ async function onStartDateFormClick(event) {
         currentStreak,
         currentStreak,
     });
+    location.reload();
 }
 
-function injectStartDateForm(startDateForm) {
+function injectStartDateForm(username) {
+    const startDateForm = `
+        <div class="startDateFormContainer" >
+            <form id="startDateForm">
+                <label for="currentStreakStartDate">
+                    Please Enter Current Streak Start Date for ${username}:
+                </label>
+                <br />
+                <input
+                    type="date"
+                    id="currentStreakStartDate"
+                    name="currentStreakStartDate"
+                    onclick="onStartDateFormClick"
+                ><br>
+                <button type="button" id="startDateFormSubmit">Submit</button>
+            </form>
+        </div>
+    `
     const graph = document.getElementsByClassName(
         'graph-before-activity-overview'
     )[0];
@@ -183,8 +182,8 @@ function injectStartDateForm(startDateForm) {
     formContainer.innerHTML = startDateForm;
     graph.appendChild(formContainer);
 
-    const button = document.getElementById('startDateFormSubmitButton');
-    button.addEventListener('click', onStartDateFormClick);
+    document.getElementById("startDateFormSubmit").onclick = onStartDateFormClick;
+
 }
 
 function appendStreakStatsHtml(html) {
@@ -357,12 +356,12 @@ function getStreakHTML(data) {
             return `
             <div class="contrib-column table-column ${
                 index === 0 ? 'contrib-column-first' : ''
-                }">
+            }">
                 <span class="text-muted">${item[0]}</span>
                 <span class="contrib-number">${item[1]}</span>
             <span class="text-muted">${item[2]}</span>
         </div>
-                `;
+                    `;
         })
         .join('\n');
 }
