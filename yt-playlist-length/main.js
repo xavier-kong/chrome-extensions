@@ -1,20 +1,20 @@
+let added = false;
+
 setTimeout(() => {
     function getSecondsFromString(string) {
         const time = string.split(':');
-        const minutes = Number(time[0]);
-        const seconds = Number(time[1]);
-        const totalSeconds = minutes * 60 + seconds;
-        return totalSeconds;
-    }
+        if (time.length == 3) { // hours
+            const hours = Number(time[0]);
+            const minutes = Number(time[1]);
+            const seconds = Number(time[2]);
 
-    function addStringToDom(string) {
-        const title = document.querySelector(
-            '#title > yt-formatted-string > a'
-        );
-        const titleString = title.innerText;
-        const newTitle = `${titleString}\n${string}`;
-        title.innerText = newTitle;
-        added = true;
+            return (hours * 60 * 60) + (minutes * 60) + (seconds);
+        } else {
+            const minutes = Number(time[0]);
+            const seconds = Number(time[1]);
+
+            return  minutes * 60 + seconds;
+        }
     }
 
     const overlayElements = Array.from(
@@ -35,7 +35,7 @@ setTimeout(() => {
         });
     const totalSeconds = timeStrings.reduce((a, b) => {
         return a + b;
-    });
+    }, 0);
 
     const hours = Math.floor(totalSeconds / 3600);
     const minutes = Math.floor((totalSeconds % 3600) / 60);
@@ -43,5 +43,17 @@ setTimeout(() => {
 
     const displayString = `(${hours} hours ${minutes} minutes ${seconds} seconds)`;
 
-    addStringToDom(displayString);
+    const title = document.querySelector(
+        'yt-formatted-string#text'
+    );
+
+    if (title && !added) {
+        const titleString = title.innerText;
+        const newTitle = `${titleString}\n${displayString}`;
+        title.innerText = newTitle;
+        added = true;
+    } else {
+        console.log('cant find title');
+    }
+
 }, 1000);
