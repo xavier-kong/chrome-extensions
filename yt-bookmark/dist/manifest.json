@@ -2,10 +2,14 @@
    "name": "Youtube Bookmark",
    "version": "1.0",
    "manifest_version": 3,
-   "permissions": [
-      "activeTab",
-      "scripting"
-   ],
+    "permissions": [
+        "tabs",
+        "webNavigation",
+        "storage",
+        "webRequest",
+        "scripting"
+    ],
+    "host_permissions": ["*://www.youtube.com/*"],
    "background": {
       "service_worker": "background.js"
    }

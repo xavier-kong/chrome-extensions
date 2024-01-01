@@ -1,0 +1,1 @@
+(()=>{"use strict";const t=document.querySelectorAll("ytd-menu-renderer");t[0]&&(document.getElementById("thebutton")||t[0].appendChild(function(){const t=document.createElement("button");return t.id="thebutton",t}()))})();

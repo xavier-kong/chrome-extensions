@@ -1,15 +1,11 @@
-let active = false;
-
-function makeOrange(color: string): void {
-    document.body.style.backgroundColor = color;
-}
-
-chrome.action.onClicked.addListener((tab) => {
-    active = !active;
-    const color = active ? 'orange' : 'white';
-    chrome.scripting.executeScript({
-        target: {tabId: tab.id ? tab.id : -1},
-        func: makeOrange,
-        args: [color]
-    }).then();
-});
+chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
+    if (
+        tab?.url?.includes('https://www.youtube.com/watch?v=') ||
+        changeInfo?.url?.includes('https://www.youtube.com/watch?v=')
+    ) {
+        chrome.scripting.executeScript({
+            target: { tabId: tabId },
+            files: ['./main.js'],
+        });
+    }
+})
