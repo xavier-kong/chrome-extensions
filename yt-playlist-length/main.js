@@ -43,17 +43,29 @@ setTimeout(() => {
 
     const displayString = `(${hours} hours ${minutes} minutes ${seconds} seconds)`;
 
-    const title = document.querySelector(
-        'yt-formatted-string#text'
-    );
+    let title = document.querySelector(
+        'yt-dynamic-sizing-formatted-string#editable-title-display > div#container > yt-formatted-string#text'
+    )
 
-    if (title && !added) {
-        const titleString = title.innerText;
-        const newTitle = `${titleString}\n${displayString}`;
-        title.innerText = newTitle;
-        added = true;
-    } else {
-        console.log('cant find title');
+    if (window.location.href === 'https://www.youtube.com/playlist?list=WL') {
+        title = document.querySelector(
+            'yt-dynamic-sizing-formatted-string > div#container > yt-formatted-string#text'
+        );
     }
+
+    if(!title) {
+        console.log('cant find title');
+        return;
+    }
+
+    if (added) {
+        console.log('already added bro');
+        return;
+    }
+
+    const titleString = title.innerText;
+    const newTitle = `${titleString}\n${displayString}`;
+    title.innerText = newTitle;
+    added = true;
 
 }, 1000);
