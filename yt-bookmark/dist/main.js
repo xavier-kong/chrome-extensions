@@ -1,1 +1,1 @@
-(()=>{"use strict";const t=document.querySelectorAll("ytd-menu-renderer");t[0]&&(document.getElementById("thebutton")||t[0].appendChild(function(){const t=document.createElement("button");return t.id="thebutton",t}()))})();
+(()=>{"use strict";const t=document.querySelectorAll("ytd-menu-renderer.ytd-watch-metadata");t[0]?document.getElementById("thebutton")?console.log("button exists"):t[0].appendChild(function(){const t=document.createElement("button");return t.id="thebutton",t.style.cssText+="margin-left: 10px;",t}()):console.log("no tool bar div")})();
