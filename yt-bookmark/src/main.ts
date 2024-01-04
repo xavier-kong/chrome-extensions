@@ -4,7 +4,7 @@ function createButton() {
         "button"
     );
     button.id = "thebutton";
-    button.style.cssText += "margin-left: 10px;"
+    button.style.cssText += "margin-left: 10px;border-radius: 10em;width: 3em;background-color: rgb(48, 52, 54);border: 0px"
 
     return button;
 }
