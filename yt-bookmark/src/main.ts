@@ -6,6 +6,15 @@ function createButton() {
     button.id = "thebutton";
     button.style.cssText += "margin-left: 10px;border-radius: 10em;width: 3em;background-color: rgb(48, 52, 54);border: 0px"
 
+    button.addEventListener('click', (e) => {
+        const titleNode = document.querySelectorAll('h1.ytd-watch-metadata > yt-formatted-string.ytd-watch-metadata');
+        const titleString = titleNode[0].innerHTML;
+
+        const video = document.getElementsByClassName('video-stream')[0];
+        // @ts-ignore: Unreachable code error
+        const videoTimestampSecs = video.currentTime as number;
+    })
+
     return button;
 }
 
