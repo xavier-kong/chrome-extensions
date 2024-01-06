@@ -1,3 +1,10 @@
+function addBookmark({ title, secs }: { title: string; secs: number }) {
+    chrome.storage.local.get(['yt-bookmark'], (result) => {
+        const data: Record<string, number> = result['yt-bookmark'] ?? {};
+        data[title] = secs;
+        chrome.storage.local.set({ 'yt-bookmark': data });
+    })
+}
 
 function createButton() {
     const button = document.createElement(
@@ -13,6 +20,8 @@ function createButton() {
         const video = document.getElementsByClassName('video-stream')[0];
         // @ts-ignore: Unreachable code error
         const videoTimestampSecs = video.currentTime as number;
+        const wholeSecs = Math.floor(videoTimestampSecs);
+        addBookmark({ title: titleString, secs: wholeSecs });
     })
 
     return button;
