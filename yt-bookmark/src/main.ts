@@ -40,3 +40,15 @@ if (toolbarDiv[0]) {
     console.log('no tool bar div');
 }
 
+chrome.storage.local.get(['yt-bookmark'], (res) => {
+    const data: Record<string, number> = res['yt-bookmark'] ?? {};
+    const titleNode = document.querySelectorAll('h1.ytd-watch-metadata > yt-formatted-string.ytd-watch-metadata');
+    const titleString = titleNode[0].innerHTML;
+
+    if (!(titleString in data)) {
+        return;
+    }
+
+
+
+})
