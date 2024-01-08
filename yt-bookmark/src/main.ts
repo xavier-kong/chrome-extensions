@@ -49,6 +49,8 @@ chrome.storage.local.get(['yt-bookmark'], (res) => {
         return;
     }
 
-
-
+    if (window.confirm("Would you like to continue this video from your last bookmark?")) {
+        const urlWithTs = `${window.location.href}&t=${data[titleString]}s`;
+        window.location.href = urlWithTs;
+    }
 })
