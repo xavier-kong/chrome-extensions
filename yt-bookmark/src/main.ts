@@ -27,6 +27,29 @@ function createButton() {
     return button;
 }
 
+chrome.storage.local.get(['yt-bookmark'], (res) => {
+    const data: Record<string, number> = res['yt-bookmark'] ?? {};
+    const titleNode = document.querySelectorAll('h1.ytd-watch-metadata > yt-formatted-string.ytd-watch-metadata');
+    const titleString = titleNode[0].innerHTML;
+
+    if (!(titleString in data)) {
+        return;
+    }
+
+    chrome.storage.local.get(['yt-bookmark-popups'], (res) => {
+        const data: Record<string, boolean> = res['yt-bookmark-popups'] ?? {};
+        const url = window.location.href;
+        if (!(data?.[url])) {
+            const newData = { ...data, url: true };
+            chrome.storage.local.set({ 'yt-bookmark-popups': newData });
+            if (window.confirm("Would you like to continue this video from your last bookmark?")) {
+                const urlWithTs = `${window.location.href}&t=${data[titleString]}s`;
+                window.location.href = urlWithTs;
+            }
+        }
+    })
+})
+
 const toolbarDiv = document.querySelectorAll('ytd-menu-renderer.ytd-watch-metadata');
 
 if (toolbarDiv[0]) {
@@ -39,18 +62,3 @@ if (toolbarDiv[0]) {
 } else {
     console.log('no tool bar div');
 }
-
-chrome.storage.local.get(['yt-bookmark'], (res) => {
-    const data: Record<string, number> = res['yt-bookmark'] ?? {};
-    const titleNode = document.querySelectorAll('h1.ytd-watch-metadata > yt-formatted-string.ytd-watch-metadata');
-    const titleString = titleNode[0].innerHTML;
-
-    if (!(titleString in data)) {
-        return;
-    }
-
-    if (window.confirm("Would you like to continue this video from your last bookmark?")) {
-        const urlWithTs = `${window.location.href}&t=${data[titleString]}s`;
-        window.location.href = urlWithTs;
-    }
-})
