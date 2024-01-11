@@ -22,6 +22,14 @@ function createButton() {
         const videoTimestampSecs = video.currentTime as number;
         const wholeSecs = Math.floor(videoTimestampSecs);
         addBookmark({ title: titleString, secs: wholeSecs });
+
+        chrome.storage.local.get(['yt-bookmark-popups'], (res) => {
+            const data: Record<string, boolean> = res['yt-bookmark-popups'] ?? {};
+            const url = window.location.href;
+            const newData = { ...data, [url]: true };
+            chrome.storage.local.set({ 'yt-bookmark-popups': newData });
+        })
+
     })
 
     return button;
@@ -40,7 +48,7 @@ chrome.storage.local.get(['yt-bookmark'], (res) => {
         const data: Record<string, boolean> = res['yt-bookmark-popups'] ?? {};
         const url = window.location.href;
         if (!(data?.[url])) {
-            const newData = { ...data, url: true };
+            const newData = { ...data, [url]: true };
             chrome.storage.local.set({ 'yt-bookmark-popups': newData });
             if (window.confirm("Would you like to continue this video from your last bookmark?")) {
                 const urlWithTs = `${window.location.href}&t=${data[titleString]}s`;
