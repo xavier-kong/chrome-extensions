@@ -1,0 +1,25 @@
+{
+    "name": "no english!",
+    "description": "No english!",
+    "version": "1.0",
+    "manifest_version": 3,
+    "host_permissions": ["*://www.youtube.com/*"],
+    "background": {
+        "service_worker": "background.js"
+    },
+    "content_scripts": [
+        {
+            "matches": [
+                "*://wwww.youtube.com/*"
+            ],
+            "js": ["inject.js"]
+        }
+    ],
+    "permissions": [
+        "tabs",
+        "webNavigation",
+        "storage",
+        "webRequest",
+        "scripting"
+    ]
+}
